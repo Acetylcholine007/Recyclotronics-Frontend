@@ -6,11 +6,13 @@ import { useHistory } from "react-router-dom";
 
 const UserDashboardPage = () => {
   const [transactions, setTransactions] = useState([]);
+  const [target, setTarget] = useState("DEPOSIT");
+  const [page, setPage] = useState(1);
   const [rvm, setRvm] = useState("None");
   const history = useHistory();
 
   useEffect(async () => {
-    let transactions = await TransactionAPI.getUserTransactions();
+    let transactions = await TransactionAPI.getUserTransactions(target, page);
     let rvm = await RVMAPI.getRVMData();
     setTransactions(transactions.data);
     setRvm(rvm.data);

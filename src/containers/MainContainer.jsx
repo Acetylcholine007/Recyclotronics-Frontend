@@ -7,6 +7,7 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Avatar,
 } from "@mui/material";
 import UserRoutes from "../routes/UserRoutes";
 import AdminRoutes from "../routes/AdminRoutes";
@@ -78,9 +79,14 @@ const MainContainer = ({ window }) => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             {appbarTitleSelector()}
           </Typography>
-          <Button color="inherit" onClick={logoutHandler}>
-            LOGOUT
-          </Button>
+          <Avatar
+            sx={{ marginRight: "1rem" }}
+            alt="avatar"
+            src="https://media.istockphoto.com/photos/orange-slice-picture-id1163872349?k=20&m=1163872349&s=612x612&w=0&h=1oVhcd6gYzgvDCVJVqJN_6mPUnHCd9uYQk5rZ3Il_9s="
+          />
+          <Typography variant="h6">
+            {auth.accountType === 1 ? "User" : "Admin"}
+          </Typography>
         </Toolbar>
       </AppBar>
       <Box
@@ -104,7 +110,10 @@ const MainContainer = ({ window }) => {
             },
           }}
         >
-          <AppDrawer accountType={auth.accountType} />
+          <AppDrawer
+            accountType={auth.accountType}
+            logoutHandler={logoutHandler}
+          />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -117,10 +126,13 @@ const MainContainer = ({ window }) => {
           }}
           open
         >
-          <AppDrawer accountType={auth.accountType} />
+          <AppDrawer
+            accountType={auth.accountType}
+            logoutHandler={logoutHandler}
+          />
         </Drawer>
       </Box>
-      <Box>
+      <Box sx={{ width: "100%" }}>
         <Toolbar />
         {auth.accountType === 1 && <UserRoutes />}
         {auth.accountType === 2 && <AdminRoutes />}
