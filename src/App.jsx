@@ -15,7 +15,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const { token, login, logout, userId } = useAuth();
+  const { token, login, logout, userId, accountType } = useAuth();
 
   return (
     <ThemeProvider theme={theme}>
@@ -24,6 +24,7 @@ function App() {
           isLoggedIn: !!token,
           token: token,
           userId: userId,
+          accountType: accountType,
           login: login,
           logout: logout,
         }}

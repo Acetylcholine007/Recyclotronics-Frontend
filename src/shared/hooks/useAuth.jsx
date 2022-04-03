@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { LS_USER_DATA, TOKEN_EXPIRATION } from "../../utils/constants";
 
 let logoutTimer;
 
@@ -12,15 +13,14 @@ export const useAuth = () => {
     setToken(token);
     setUserId(uid);
     setAccountType(type);
-    const tokenExpirationDate =
-      expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
+    const tokenExpirationDate = expirationDate || TOKEN_EXPIRATION;
     setTokenExpirationDate(tokenExpirationDate);
     localStorage.setItem(
-      "userData",
+      LS_USER_DATA,
       JSON.stringify({
         userId: uid,
         token,
-        accountType,
+        accountType: type,
         expiration: tokenExpirationDate.toISOString(),
       })
     );
@@ -30,7 +30,7 @@ export const useAuth = () => {
     setToken(null);
     setTokenExpirationDate(null);
     setUserId(null);
-    localStorage.removeItem("userData");
+    localStorage.removeItem(LS_USER_DATA);
   }, []);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const useAuth = () => {
   }, [token, logout, tokenExpirationDate]);
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("userData"));
+    const storedData = JSON.parse(localStorage.getItem(LS_USER_DATA));
     if (
       storedData &&
       storedData.token &&
@@ -53,10 +53,11 @@ export const useAuth = () => {
       login(
         storedData.userId,
         storedData.token,
+        storedData.accountType,
         new Date(storedData.expiration)
       );
     }
   }, [login]);
 
-  return { token, login, logout, userId };
+  return { token, login, logout, userId, accountType };
 };
