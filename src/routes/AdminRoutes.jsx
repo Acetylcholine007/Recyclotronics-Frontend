@@ -1,3 +1,4 @@
+import { AssignmentRounded, DashboardRounded, HomeRounded, SettingsRounded } from "@mui/icons-material";
 import { Route, Switch } from "react-router";
 
 import NotFoundPage from "../shared/pages/NotFoundPage";
@@ -5,7 +6,7 @@ import AdminDashboardPage from "../views/dashboardView/pages/AdminDashboardPage"
 import ReportPage from "../views/reportView/pages/ReportPage";
 import SettingsPage from "../views/settingsView/pages/SettingsPage";
 
-const UserRoutes = () => {
+const AdminRoutes = () => {
   return (
     <Switch>
       <Route exact path="/">
@@ -27,4 +28,22 @@ const UserRoutes = () => {
   );
 };
 
-export default UserRoutes;
+export default AdminRoutes;
+
+export const adminRoutes = [
+  {
+    title: "Dashbaord",
+    icon: <DashboardRounded />,
+    path: "/dashboard",
+  },
+  {
+    title: "Reports",
+    icon: <AssignmentRounded />,
+    path: "/reports",
+  },
+  {
+    title: "Settings",
+    icon: <SettingsRounded />,
+    path: "/settings",
+  },
+];

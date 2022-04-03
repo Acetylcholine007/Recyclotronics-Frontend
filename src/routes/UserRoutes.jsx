@@ -1,3 +1,4 @@
+import { AccountBalanceRounded, AccountBalanceWalletRounded, DashboardRounded, HomeRounded, PersonRounded } from "@mui/icons-material";
 import { Route, Switch } from "react-router";
 
 import NotFoundPage from "../shared/pages/NotFoundPage";
@@ -32,3 +33,21 @@ const UserRoutes = () => {
 };
 
 export default UserRoutes;
+
+export const userRoutes = [
+  {
+    title: "Dashbaord",
+    icon: <DashboardRounded />,
+    path: "/dashboard",
+  },
+  {
+    title: "Profile",
+    icon: <PersonRounded />,
+    path: "/profile",
+  },
+  {
+    title: "Wallet",
+    icon: <AccountBalanceWalletRounded />,
+    path: "/wallet",
+  },
+];

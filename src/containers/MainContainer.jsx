@@ -52,7 +52,7 @@ const MainContainer = ({ window }) => {
 
   const logoutHandler = () => {
     auth.logout();
-    history.push('/');
+    history.push("/");
   };
 
   return (
@@ -104,7 +104,7 @@ const MainContainer = ({ window }) => {
             },
           }}
         >
-          <AppDrawer />
+          <AppDrawer accountType={auth.accountType} />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -117,7 +117,7 @@ const MainContainer = ({ window }) => {
           }}
           open
         >
-          <AppDrawer />
+          <AppDrawer accountType={auth.accountType} />
         </Drawer>
       </Box>
       <Box>

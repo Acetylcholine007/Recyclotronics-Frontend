@@ -1,30 +1,46 @@
 import { Inbox, Mail } from "@mui/icons-material";
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
+import {
+  AppBar,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { adminRoutes } from "../../routes/AdminRoutes";
+import { userRoutes } from "../../routes/UserRoutes";
 
-const AppDrawer = () => {
+const activeChecker = (path) => {
+  let newPath = location.pathname;
+  if (newPath === "/") {
+    newPath = "/dashboard";
+  }
+  return newPath.includes(path);
+};
+
+const AppDrawer = ({ accountType }) => {
+  const history = useHistory();
+
   return (
     <div>
-      <Toolbar />
+      <Toolbar>
+        <Typography variant="body1">Reverse Vending Machine</Typography>
+      </Toolbar>
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <Inbox /> : <Mail />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <Inbox /> : <Mail />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
+        {(accountType === 1 ? userRoutes : adminRoutes).map((item, index) => (
+          <ListItem
+            button
+            key={index}
+            selected={activeChecker(item.path)}
+            onClick={() => history.push(item.path)}
+          >
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.title} />
           </ListItem>
         ))}
       </List>
