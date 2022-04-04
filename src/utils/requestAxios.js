@@ -18,7 +18,6 @@ const requestAxios = async (endpoint, body, method, type) => {
     }
 
     let response = false;
-    
     try {
       response = await axios({
         url: `${API_URL}${endpoint}`,

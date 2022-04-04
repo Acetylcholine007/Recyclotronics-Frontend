@@ -36,7 +36,7 @@ const AdminDashboardPage = () => {
       <Grid container>
         <Grid item md={6} xs={12}>
           <Typography variant="h5">Reverse Vending Machine Status</Typography>
-          <h1>{binGauge}</h1>
+          <h1>{binGauge} %</h1>
         </Grid>
         <Grid item md={6} xs={12}>
           <Typography variant="h5">Bin Collection History</Typography>

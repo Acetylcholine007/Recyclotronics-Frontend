@@ -1,5 +1,4 @@
 import {
-  Button,
   Container,
   Table,
   TableBody,
@@ -9,6 +8,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
+import { DateTime } from "luxon";
 import React, { useEffect, useState } from "react";
 import TransactionAPI from "../../../shared/apis/TransactionAPI";
 
@@ -21,6 +21,7 @@ const ReportPage = () => {
   useEffect(async () => {
     let response = await TransactionAPI.getTransactions(target, page);
     setReports(response.data);
+    setTotalItems(response.totalItems);
   }, [target, page]);
 
   return (
@@ -38,21 +39,30 @@ const ReportPage = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Withdrawal Date</TableCell>
+            <TableCell>User Email</TableCell>
+            <TableCell>Transaction ID</TableCell>
+            <TableCell>Date Time</TableCell>
+            <TableCell>E-waste</TableCell>
+            <TableCell>Points</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {reports.map((report) => (
-            <TableRow>
-              <TableCell>{"Date"}</TableCell>
-              <TableCell>
-                <Button variant="text">View Report</Button>
-              </TableCell>
-              <TableCell>
-                <Button variant="text">Download Report</Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {reports.map((report) => {
+            const datetime = DateTime.fromISO(report.createdAt);
+            return (
+              <TableRow key={report._id}>
+                <TableCell>{report.user.email}</TableCell>
+                <TableCell>{report._id}</TableCell>
+                <TableCell>
+                  {datetime.toLocaleString(DateTime.DATETIME_MED)}
+                </TableCell>
+                <TableCell>{report.data.scrapType}</TableCell>
+                <TableCell>
+                {report.data.weight * report.data.pointsPerGram}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
       <h1>{totalItems}</h1>

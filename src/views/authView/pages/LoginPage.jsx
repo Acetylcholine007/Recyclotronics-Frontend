@@ -11,7 +11,6 @@ import React, { useContext, useState } from "react";
 import AuthAPI from "../../../shared/apis/AuthAPI";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../shared/contexts/AuthContext";
-import { AccountCircleRounded } from "@mui/icons-material";
 
 const LoginPage = () => {
   const auth = useContext(AuthContext);

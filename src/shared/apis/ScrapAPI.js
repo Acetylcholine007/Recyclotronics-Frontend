@@ -8,8 +8,26 @@ const getScraps = async () => {
   }
 };
 
+const updateScrap = async (scrap) => {
+  let response = await requestAxios(
+    `/scraps/${scrap._id}`,
+    {
+      name: scrap.name,
+      pointsPerGram: scrap.pointsPerGram,
+      pesoPerPoints: scrap.pesoPerPoints,
+    },
+    "PUT",
+    "application/json"
+  );
+  if (response) {
+    console.log(response);
+    return response;
+  }
+};
+
 const ScrapAPI = {
-    getScraps,
+  getScraps,
+  updateScrap,
 };
 
 export default ScrapAPI;

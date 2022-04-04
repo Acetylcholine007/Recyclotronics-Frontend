@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Container,
   styled,
@@ -13,6 +12,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ScrapAPI from "../../../shared/apis/ScrapAPI";
+import ScrapModal from "../components/ScrapModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,6 +36,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const SettingsPage = () => {
   const [scraps, setScraps] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [targetScrap, setTargetScrap] = useState(null);
+  const handleOpen = (scrap) => {
+    setTargetScrap(scrap);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setTargetScrap(null);
+  };
+  const handleSubmit = async (scrap) => {
+    const response = await ScrapAPI.updateScrap(scrap);
+    setScraps(() => {
+      const newScraps = [...scraps];
+      const target = newScraps.find((item) => item._id === response.data._id);
+      target.pointsPerGram = response.data.pointsPerGram;
+      target.pesoPerPoints = response.data.pesoPerPoints;
+      target.name = response.data.name;
+      return newScraps;
+    });
+    handleClose();
+  };
 
   useEffect(async () => {
     let response = await ScrapAPI.getScraps();
@@ -49,29 +71,37 @@ const SettingsPage = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>Item</StyledTableCell>
-              <StyledTableCell align="right">Points per gram</StyledTableCell>
-              <StyledTableCell align="right">Peso per points</StyledTableCell>
-              <StyledTableCell align="right"></StyledTableCell>
+              <StyledTableCell align="center">Points per gram</StyledTableCell>
+              <StyledTableCell align="center">Peso per points</StyledTableCell>
+              <StyledTableCell align="center"></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {scraps.map((scrap) => (
               <StyledTableRow key={scrap.name}>
-                <StyledTableCell align="right">{scrap.name}</StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="left">{scrap.name}</StyledTableCell>
+                <StyledTableCell align="center">
                   {scrap.pointsPerGram}
                 </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="center">
                   {scrap.pesoPerPoints}
                 </StyledTableCell>
-                <StyledTableCell align="right">
-                  <Button variant="text">EDIT</Button>
+                <StyledTableCell align="center">
+                  <Button variant="text" onClick={() => handleOpen(scrap)}>
+                    EDIT
+                  </Button>
                 </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
         </Table>
       </Card>
+      <ScrapModal
+        open={open}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit}
+        scrap={targetScrap}
+      />
     </Container>
   );
 };

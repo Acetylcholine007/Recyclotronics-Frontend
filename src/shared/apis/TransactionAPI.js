@@ -8,8 +8,8 @@ const getTransactions = async (target, page) => {
   }
 };
 
-const getUserTransactions = async (target, page) => {
-  let response = await requestAxios(`/transactions/?target=${target}&page=${page}`);
+const getUserTransactions = async (target, page, userId) => {
+  let response = await requestAxios(`/transactions/user/${userId}/?target=${target}&page=${page}`);
   if (response) {
     console.log(response);
     return response;
