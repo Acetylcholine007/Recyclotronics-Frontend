@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import { blue, red } from "@mui/material/colors";
+import { lime, teal } from "@mui/material/colors";
 
 import AuthContextProvider from "./shared/contexts/AuthContext";
 import { useAuth } from "./shared/hooks/useAuth";
@@ -9,8 +9,8 @@ import AuthContainer from "./containers/AuthContainer";
 
 const theme = createTheme({
   palette: {
-    primary: blue,
-    secondary: red,
+    primary: teal,
+    secondary: lime,
   },
 });
 
