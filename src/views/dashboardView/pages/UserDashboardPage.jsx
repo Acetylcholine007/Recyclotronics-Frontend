@@ -10,6 +10,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import ScrapAPI from "../../../shared/apis/ScrapAPI";
@@ -23,16 +25,18 @@ const UserDashboardPage = () => {
   const [target, setTarget] = useState("DEPOSIT");
   const [points, setPoints] = useState(0);
   const [page, setPage] = useState(1);
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const [rvm, setRvm] = useState("None");
   const auth = useContext(AuthContext);
   const history = useHistory();
 
   const scanHandler = async () => {
-    const response = RVMAPI.initiateScan();
-    if (response) {
+    const response = await RVMAPI.initiateScan();
+    console.log('>>>>>>>',response)
+    if (response.status === 200) {
       history.push("/dashboard/scan");
     } else {
-      console.log("RVM is busy");
+      setShowSnackbar(true);
     }
   };
 
@@ -100,6 +104,25 @@ const UserDashboardPage = () => {
           </Stack>
         </Grid>
       </Grid>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowSnackbar(false)}
+      >
+        <Alert
+          onClose={() => setShowSnackbar(false)}
+          severity="error"
+          variant="filled"
+        >
+          {
+            "RVM is currently processing a different user request. Try again after 3 minutes."
+          }
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

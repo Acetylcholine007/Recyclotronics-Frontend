@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { LS_USER_DATA, TOKEN_EXPIRATION } from "../../utils/constants";
 
 let logoutTimer;
@@ -8,11 +9,9 @@ export const useAuth = () => {
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
   const [userId, setUserId] = useState(null);
   const [accountType, setAccountType] = useState(null);
+  const history = useHistory();
 
   const login = useCallback((uid, token, type, expirationDate) => {
-    setToken(token);
-    setUserId(uid);
-    setAccountType(type);
     const tokenExpirationDate = expirationDate || TOKEN_EXPIRATION;
     setTokenExpirationDate(tokenExpirationDate);
     localStorage.setItem(
@@ -24,6 +23,9 @@ export const useAuth = () => {
         expiration: tokenExpirationDate.toISOString(),
       })
     );
+    setUserId(uid);
+    setAccountType(type);
+    setToken(token);
   }, []);
 
   const logout = useCallback(() => {
@@ -31,6 +33,7 @@ export const useAuth = () => {
     setTokenExpirationDate(null);
     setUserId(null);
     localStorage.removeItem(LS_USER_DATA);
+    history.push('/');
   }, []);
 
   useEffect(() => {

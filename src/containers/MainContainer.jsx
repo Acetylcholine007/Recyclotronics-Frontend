@@ -53,7 +53,6 @@ const MainContainer = ({ window }) => {
 
   const logoutHandler = () => {
     auth.logout();
-    history.push("/");
   };
 
   return (

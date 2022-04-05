@@ -25,7 +25,7 @@ const requestAxios = async (endpoint, body, method, type) => {
         data: method === "GET" ? undefined : JSON.stringify(body),
         headers,
       });
-      return response.data;
+      return {...response.data, status: response.status};
     } catch (err) {
       console.error(err);
       return false;

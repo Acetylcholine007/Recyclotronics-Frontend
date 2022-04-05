@@ -3,7 +3,6 @@ import { lime, teal } from "@mui/material/colors";
 
 import AuthContextProvider from "./shared/contexts/AuthContext";
 import { useAuth } from "./shared/hooks/useAuth";
-import { BrowserRouter as Router } from "react-router-dom";
 import MainContainer from "./containers/MainContainer";
 import AuthContainer from "./containers/AuthContainer";
 
@@ -29,10 +28,8 @@ function App() {
           logout: logout,
         }}
       >
-        <Router>
-          {!!token && <MainContainer />}
-          {!token && <AuthContainer />}
-        </Router>
+        {!!token && <MainContainer />}
+        {!token && <AuthContainer />}
       </AuthContextProvider>
     </ThemeProvider>
   );
