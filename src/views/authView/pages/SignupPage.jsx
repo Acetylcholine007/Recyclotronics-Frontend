@@ -7,30 +7,47 @@ import {
   TextField,
   Typography,
   InputAdornment,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthAPI from "../../../shared/apis/AuthAPI";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import LockIcon from '@mui/icons-material/Lock';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import LockIcon from "@mui/icons-material/Lock";
 import background from "../../../assets/BG.png";
 
 const SignupPage = () => {
   const [fullname, setFullname] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [isInfo, setIsInfo] = useState(false);
   const history = useHistory();
 
   const signupHandler = async (event) => {
     event.preventDefault();
-    AuthAPI.signup(fullname, email, password, () => history.push("/login"));
+    await AuthAPI.signup(
+      fullname,
+      email,
+      password,
+      (isSuccess) => history.push({pathname: "/login", state: {toVerify: isSuccess}}),
+      (message) => {
+        setSnackbarMessage(message);
+        setIsInfo(false);
+        setShowSnackbar(true);
+      }
+    );
   };
 
   return (
     <Box>
       <Container align="center" sx={{ marginTop: "4rem" }}>
-        <Typography variant="h3" sx={{ marginBottom: "1.5rem" }}>Sign up for an account</Typography>
+        <Typography variant="h3" sx={{ marginBottom: "1.5rem" }}>
+          Sign up for an account
+        </Typography>
         <Stack component="form" spacing={2} noValidate autoComplete="off">
           <TextField
             id="fullname"
@@ -47,7 +64,7 @@ const SignupPage = () => {
                 </InputAdornment>
               ),
             }}
-            sx={{backgroundColor: "#f1effb"}}
+            sx={{ backgroundColor: "#f1effb" }}
           />
           <TextField
             id="email"
@@ -57,14 +74,14 @@ const SignupPage = () => {
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             fullWidth={true}
-             InputProps={{
+            InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
                   <AlternateEmailIcon />
                 </InputAdornment>
               ),
             }}
-            sx={{backgroundColor: "#f1effb"}}
+            sx={{ backgroundColor: "#f1effb" }}
           />
           <TextField
             id="password"
@@ -81,20 +98,45 @@ const SignupPage = () => {
                 </InputAdornment>
               ),
             }}
-            sx={{backgroundColor: "#f1effb"}}
+            sx={{ backgroundColor: "#f1effb" }}
           />
           <Button variant="contained" size="large" onClick={signupHandler}>
             SIGNUP
           </Button>
           <Stack direction="row" justifyContent="center">
-            <Typography variant="h6" color="#7d7d7f">Already have an account?</Typography>
+            <Typography variant="h6" color="#7d7d7f">
+              Already have an account?
+            </Typography>
             <Button variant="text" onClick={() => history.push("/login")}>
-            <Typography color="#07b464" fontWeight="bold">Log In</Typography>
+              <Typography color="#07b464" fontWeight="bold">
+                Log In
+              </Typography>
             </Button>
           </Stack>
         </Stack>
       </Container>
-      <img src={background} alt="Background image" style={{ width: "100%", transform: "translateY(65px)"}}/>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowSnackbar(false)}
+      >
+        <Alert
+          onClose={() => setShowSnackbar(false)}
+          severity={isInfo ? "info" : "error"}
+          variant="filled"
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+      <img
+        src={background}
+        alt="Background image"
+        style={{ width: "100%", transform: "translateY(65px)" }}
+      />
     </Box>
   );
 };
