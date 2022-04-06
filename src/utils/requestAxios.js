@@ -18,6 +18,7 @@ const requestAxios = async (endpoint, body, method, type) => {
     }
 
     let response = false;
+
     try {
       response = await axios({
         url: `${API_URL}${endpoint}`,
@@ -25,12 +26,14 @@ const requestAxios = async (endpoint, body, method, type) => {
         data: method === "GET" ? undefined : JSON.stringify(body),
         headers,
       });
-      return {...response.data, status: response.status};
+
+      return { ...response.data, status: response.status };
     } catch (err) {
       console.error(err);
-      return false;
+      return err.response;
     }
   } catch (err) {
+    console.log(error);
     console.error("HTTP request failed", err);
     return false;
   }

@@ -26,7 +26,6 @@ const ScanPage = () => {
   };
 
   const socketHandler = (data) => {
-    console.log("???????", data);
     setStatus("IDLE");
     setData(data);
   };
