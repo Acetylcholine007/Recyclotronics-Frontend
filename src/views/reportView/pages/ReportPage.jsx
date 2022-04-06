@@ -7,65 +7,152 @@ import {
   TableRow,
   ToggleButton,
   ToggleButtonGroup,
+  Typography,
+  TableContainer,
+  TableFooter,
+  Paper,
+  Button
 } from "@mui/material";
 import { DateTime } from "luxon";
 import React, { useEffect, useState } from "react";
 import TransactionAPI from "../../../shared/apis/TransactionAPI";
+import LinearProgress from '@mui/material/LinearProgress';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 const ReportPage = () => {
   const [reports, setReports] = useState([]);
   const [target, setTarget] = useState("DEPOSIT");
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(12);
+  const [loading, setLoading] = useState(true)
 
   useEffect(async () => {
-    let response = await TransactionAPI.getTransactions(target, page);
+    let response = await TransactionAPI.getTransactions(target, page, setLoading(true));
     setReports(response.data);
     setTotalItems(response.totalItems);
+    setLoading(false);
   }, [target, page]);
 
+  
+  //button navigator style
+  const btnStyle = {
+    margin: "0 3px",
+    height: "30px"
+  }
+
+  //loading style
+  const depositLoading = {
+    marginTop: "1rem",
+    transform: "translateX(40%)",
+    padding: "70px",
+    width: "200%",
+  }
+
+  const redeemLoading = {
+    marginTop: "1rem",
+    transform: "translateX(40%)",
+    padding: "70px",
+    width: "170%",
+  }
+
+  //For empty rows in table
+  const emptyRows =
+    page > 1 ? Math.max(0, (1 + page) * rowsPerPage - 12) : 0;
+
   return (
-    <Container align="center">
+    <Container align="center" sx={{marginTop: "1rem"}}>
+      <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem"}}>
+      <Typography variant="h6">Transaction History</Typography>
       <ToggleButtonGroup
+        sx={{marginLeft: "25%", border: "1px solid #146356"}}
         color="primary"
         value={target}
         exclusive
         onChange={(event, val) => setTarget(val)}
       >
-        <ToggleButton value="DEPOSIT">Deposit</ToggleButton>
-        <ToggleButton value="REDEEM">Redeem</ToggleButton>
+        <ToggleButton value="DEPOSIT" sx={{backgroundColor: "#146356", color: "#fff", border: "1px solid #146356"}}>Deposit</ToggleButton>
+        <ToggleButton value="REDEEM" sx={{backgroundColor: "#146356", color: "#fff", border: "1px solid #146356"}}>Redeem</ToggleButton>
       </ToggleButtonGroup>
+      </div>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>User Email</TableCell>
-            <TableCell>Transaction ID</TableCell>
-            <TableCell>Date Time</TableCell>
-            <TableCell>E-waste</TableCell>
-            <TableCell>Points</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {reports.map((report) => {
-            const datetime = DateTime.fromISO(report.createdAt);
-            return (
-              <TableRow key={report._id}>
-                <TableCell>{report.user.email}</TableCell>
-                <TableCell>{report._id}</TableCell>
-                <TableCell>
-                  {datetime.toLocaleString(DateTime.DATETIME_MED)}
-                </TableCell>
-                <TableCell>{report.data.scrapType}</TableCell>
-                <TableCell>
-                {report.data.weight * report.data.pointsPerGram}
-                </TableCell>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+              {target === "DEPOSIT" ? 
+                <TableRow>
+                  <TableCell>User Email</TableCell>
+                  <TableCell>Transaction ID</TableCell>
+                  <TableCell>Date Time</TableCell>
+                  <TableCell>E-waste</TableCell>
+                  <TableCell>Points</TableCell>
+                </TableRow>
+                : 
+                <TableRow>
+                  <TableCell>User Email</TableCell>
+                  <TableCell>Transaction ID</TableCell>
+                  <TableCell>Date Time</TableCell>
+                  <TableCell>Amount</TableCell>
+                </TableRow>
+              }
+          </TableHead>
+          <TableBody>
+            {loading ? <div style={target === "DEPOSIT" ? depositLoading : redeemLoading}><LinearProgress color="primary"/></div> : reports.map((report) => {
+              const datetime = DateTime.fromISO(report.createdAt);
+              if(target === "DEPOSIT"){
+                return (
+                  <TableRow key={report._id}>
+                    <TableCell>{report.user.email}</TableCell>
+                    <TableCell>{report._id}</TableCell>
+                    <TableCell>
+                      {datetime.toLocaleString(DateTime.DATETIME_MED)}
+                    </TableCell>
+                    <TableCell>{report.data.scrapType}</TableCell>
+                    <TableCell>
+                    {report.data.weight * report.data.pointsPerGram}
+                    </TableCell>
+                  </TableRow>
+                );
+              } else {
+                return (
+                  <TableRow key={report._id}>
+                    <TableCell>{report.user.email}</TableCell>
+                    <TableCell>{report._id}</TableCell>
+                    <TableCell>
+                      {datetime.toLocaleString(DateTime.DATETIME_MED)}
+                    </TableCell>
+                    <TableCell>{report.data.amount}</TableCell>
+                  </TableRow>
+                );
+              }
+            })}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 12 * emptyRows }}>
+                <TableCell colSpan={4} />
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <h1>{totalItems}</h1>
+            )}
+          </TableBody>
+        </Table>
+        <TableFooter>
+          <div style={{ margin: "1rem 0", display: "flex", alignItems: "center"}}>
+            <h5 style={{margin: "0 5px"}}>Page: {page}</h5>
+            {page === 1 ? 
+              <Button style={btnStyle} variant="outlined" endIcon={<NavigateNextIcon />} onClick={() => setPage(page + 1)}>
+                <h5>Next</h5>
+              </Button> : 
+            <div>
+              <Button style={btnStyle} variant="outlined" startIcon={<NavigateBeforeIcon />} onClick={() => setPage(page - 1)}>
+                <h5>Back</h5>
+              </Button>
+              <Button style={btnStyle} variant="outlined" endIcon={<NavigateNextIcon />} onClick={() => setPage(page + 1)}>
+                <h5>Next</h5>
+              </Button>
+            </div>
+            }
+          </div>
+        </TableFooter>
+      </TableContainer>
     </Container>
   );
 };

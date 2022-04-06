@@ -139,12 +139,19 @@ const ProfilePage = () => {
         <TableFooter>
             <div style={{ margin: "1rem 0", display: "flex", alignItems: "center"}}>
               <h5 style={{margin: "0 5px"}}>Page: {page}</h5>
-            <Button style={btnStyle} variant="outlined" startIcon={<NavigateBeforeIcon />} onClick={() => setPage(page - 1)}>
-            <h5>Back</h5>
-            </Button>
-            <Button style={btnStyle} variant="outlined" endIcon={<NavigateNextIcon />} onClick={() => setPage(page + 1)}>
-            <h5>Next</h5>
-            </Button>
+              {page === 1 ? 
+                <Button style={btnStyle} variant="outlined" endIcon={<NavigateNextIcon />} onClick={() => setPage(page + 1)}>
+                  <h5>Next</h5>
+                </Button> : 
+                <div>
+                  <Button style={btnStyle} variant="outlined" startIcon={<NavigateBeforeIcon />} onClick={() => setPage(page - 1)}>
+                    <h5>Back</h5>
+                  </Button>
+                  <Button style={btnStyle} variant="outlined" endIcon={<NavigateNextIcon />} onClick={() => setPage(page + 1)}>
+                    <h5>Next</h5>
+                  </Button>
+                </div>
+              }
             </div>
           </TableFooter>
       </TableContainer>
