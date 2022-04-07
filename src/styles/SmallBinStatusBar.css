@@ -1,0 +1,45 @@
+/* for main bin container*/
+.small-bin-container{
+    margin: 8% 18%;
+}
+.small-bin-wrapper{
+    position: relative;
+    height: 200px;
+    width: 150px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #414141;
+    overflow: hidden;
+}
+.small-top-cover{
+    margin-left: 2.25rem;
+    width: 80px;
+    height: 15px;
+    background-color: #414141;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.small-bin-cover{
+    height: 15px;
+    width: 150px;
+    margin-bottom: 0.20rem;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: #414141;
+}
+.small-bin-status{
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    height: 70px;
+    width: 100%;
+    background-color: #a3da8d;
+}
+.small-bin-gauge{
+    position: sticky;
+    text-align: center;
+    margin-top: 70px;
+    font-size: 1.85rem;
+    color: #fff;
+}
+/* end of bin container*/

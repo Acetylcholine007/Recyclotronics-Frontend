@@ -32,7 +32,7 @@ export default AdminRoutes;
 
 export const adminRoutes = [
   {
-    title: "Dashbaord",
+    title: "Dashboard",
     icon: <DashboardRounded />,
     path: "/dashboard",
   },

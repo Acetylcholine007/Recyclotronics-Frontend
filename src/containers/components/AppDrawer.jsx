@@ -3,25 +3,23 @@ import {
   AppBar,
   Button,
   Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { adminRoutes } from "../../routes/AdminRoutes";
 import { userRoutes } from "../../routes/UserRoutes";
+import SmallBinStatusBar from "../../shared/components/SmallBinStatusBar";
+import "../../styles/AppDrawer.css";
 
-const activeChecker = (path) => {
+
   let newPath = location.pathname;
   if (newPath === "/") {
     newPath = "/dashboard";
   }
-  return newPath.includes(path);
-};
+  console.log(newPath);
 
 const AppDrawer = ({ accountType, logoutHandler }) => {
   const history = useHistory();
@@ -33,19 +31,26 @@ const AppDrawer = ({ accountType, logoutHandler }) => {
           <Typography variant="body1">Reverse Vending Machine</Typography>
         </Toolbar>
         <Divider />
-        <List>
+        <div className="navlink-container">
           {(accountType === 1 ? userRoutes : adminRoutes).map((item, index) => (
-            <ListItem
-              button
-              key={index}
-              selected={activeChecker(item.path)}
-              onClick={() => history.push(item.path)}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItem>
+            <div className="link-wrapper">
+              <NavLink
+                to={item.path}
+                key={index}
+                onClick={() => history.push(item.path)}
+              >
+                <div className="link-content">
+                  <span>{item.icon}</span>
+                  <p>{item.title}</p>
+                </div>
+              </NavLink>
+            </div>
           ))}
-        </List>
+        </div>
+      </div>
+      <div>
+        <h1 style={{textAlign: "center"}}>Bin Status</h1>
+        <SmallBinStatusBar />
       </div>
       <div
         style={{
