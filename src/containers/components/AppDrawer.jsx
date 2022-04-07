@@ -1,6 +1,7 @@
 import { Inbox, LogoutOutlined, Mail } from "@mui/icons-material";
 import {
   AppBar,
+  Avatar,
   Button,
   Divider,
   Toolbar,
@@ -28,7 +29,14 @@ const AppDrawer = ({ accountType, logoutHandler }) => {
     <>
       <div>
         <Toolbar>
-          <Typography variant="body1">Reverse Vending Machine</Typography>
+          <Stack direction='row' alignItems='center'>
+          <Avatar
+            sx={{ marginRight: "1rem" }}
+            alt="avatar"
+            src="/assets/images/eco.png"
+          />
+          <Typography variant="body1" sx={{fontWeight: 'bold'}}>Reverse Vending Machine</Typography>
+          </Stack>
         </Toolbar>
         <Divider />
         <div className="navlink-container">

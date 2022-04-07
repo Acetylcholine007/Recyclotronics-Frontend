@@ -16,7 +16,6 @@ import AuthAPI from "../../../shared/apis/AuthAPI";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
-import background from "../../../assets/BG.png";
 
 const SignupPage = () => {
   const [fullname, setFullname] = useState("");
@@ -133,7 +132,7 @@ const SignupPage = () => {
         </Alert>
       </Snackbar>
       <img
-        src={background}
+        src='/assets/images/BG.png'
         alt="Background image"
         style={{ width: "100%", transform: "translateY(65px)" }}
       />
