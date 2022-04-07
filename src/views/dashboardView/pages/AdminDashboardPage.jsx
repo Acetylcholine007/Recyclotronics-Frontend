@@ -22,7 +22,7 @@ const AdminDashboardPage = () => {
   useEffect(async () => {
     let response = await RVMAPI.getRVMData(setLoading(true));
     setBinGauge(response.data.binGauge);
-    setCollectionHistory(response.data.collectionHistory);
+    //setCollectionHistory(response.data.collectionHistory);
     setLoading(false)
   }, []);
 

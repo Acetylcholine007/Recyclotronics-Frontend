@@ -13,11 +13,14 @@ import {
 import React, { useEffect, useState } from "react";
 import ScrapAPI from "../../../shared/apis/ScrapAPI";
 import ScrapModal from "../components/ScrapModal";
+import LinearProgress from '@mui/material/LinearProgress';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
+    backgroundColor: "#fff",
+    color: "000",
+    fontWeight: "bold",
+    fontSize: "1.125rem"
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -34,10 +37,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+//loading style
+const loadingStyle = {
+  marginTop: "1rem",
+  transform: "translateX(60%)",
+  padding: "50px",
+  width: "200%",
+}
+
+const sx = {
+  fontWeight: "600",
+}
+
 const SettingsPage = () => {
   const [scraps, setScraps] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [targetScrap, setTargetScrap] = useState(null);
+  const [loading, setLoading] = useState(true)
+
   const handleOpen = (scrap) => {
     setTargetScrap(scrap);
     setOpen(true);
@@ -60,13 +77,14 @@ const SettingsPage = () => {
   };
 
   useEffect(async () => {
-    let response = await ScrapAPI.getScraps();
+    let response = await ScrapAPI.getScraps( setLoading(true) );
     setScraps(response.data);
+    setLoading(false);
   }, []);
 
   return (
     <Container>
-      <Card>
+      <Card sx={{marginTop: "1.5rem"}}>
         <Table>
           <TableHead>
             <TableRow>
@@ -77,17 +95,17 @@ const SettingsPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {scraps.map((scrap) => (
+            {loading ? <div style={loadingStyle}><LinearProgress color="primary"/></div> : scraps.map((scrap) => (
               <StyledTableRow key={scrap.name}>
-                <StyledTableCell align="left">{scrap.name}</StyledTableCell>
-                <StyledTableCell align="center">
+                <StyledTableCell align="left" sx={sx}>{scrap.name}</StyledTableCell>
+                <StyledTableCell align="center" sx={sx}>
                   {scrap.pointsPerGram}
                 </StyledTableCell>
-                <StyledTableCell align="center">
+                <StyledTableCell align="center" sx={sx}>
                   {scrap.pesoPerPoints}
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button variant="text" onClick={() => handleOpen(scrap)}>
+                <StyledTableCell align="center" sx={sx}>
+                  <Button variant="text" sx={{color: "#267693", fontWeight: "600"}} onClick={() => handleOpen(scrap)}>
                     EDIT
                   </Button>
                 </StyledTableCell>
