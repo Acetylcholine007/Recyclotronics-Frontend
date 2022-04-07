@@ -24,7 +24,7 @@ import { Battery20Rounded } from "@mui/icons-material";
 const UserDashboardPage = () => {
   const [scraps, setScraps] = useState([]);
   const [target, setTarget] = useState("DEPOSIT");
-  const [points, setPoints] = useState(0);
+  const [balance, setBalance] = useState(0);
   const [page, setPage] = useState(1);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [rvm, setRvm] = useState("None");
@@ -45,7 +45,7 @@ const UserDashboardPage = () => {
     let scraps = await ScrapAPI.getScraps();
     let rvm = await RVMAPI.getRVMData();
     let user = await UserAPI.getUserData(auth.userId);
-    setPoints(user.data.points);
+    setBalance(user.data.balance);
     setScraps(scraps.data);
     setRvm(rvm.data);
   }, []);
@@ -133,7 +133,7 @@ const UserDashboardPage = () => {
               <Stack>
                 <Typography variant="h6">Total Points</Typography>
                 <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-                  {points}
+                  {balance}
                 </Typography>
               </Stack>
             </Card>

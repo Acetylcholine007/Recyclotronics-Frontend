@@ -22,9 +22,37 @@ const initiateScan = async () => {
   }
 };
 
+const collect = async () => {
+  let response = await requestAxios(
+    `/rvm/collect/${RVM_SERIAL}`,
+    { timestamp: new Date().toISOString(), status: "SUCCESS" },
+    "POST",
+    "application/json"
+  );
+  if (response) {
+    console.log(response);
+  }
+  return response;
+};
+
+const sendNotification = async () => {
+  let response = await requestAxios(
+    `/rvm/sendNotification/${RVM_SERIAL}`,
+    {},
+    "POST",
+    "application/json"
+  );
+  if (response) {
+    console.log(response);
+  }
+  return response;
+};
+
 const RVMAPI = {
   getRVMData,
   initiateScan,
+  sendNotification,
+  collect,
 };
 
 export default RVMAPI;

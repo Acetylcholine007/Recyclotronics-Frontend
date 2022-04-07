@@ -20,13 +20,13 @@ import { AuthContext } from "../../../shared/contexts/AuthContext";
 const WalletPage = () => {
   const auth = useContext(AuthContext);
   const [balance, setBalance] = useState(0);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(async () => {
     let user = await UserAPI.getUserData(auth.userId);
-    setBalance(user.data.points);
+    setBalance(user.data.balance);
   }, []);
 
   const cashoutHandler = async () => {
@@ -61,7 +61,7 @@ const WalletPage = () => {
             label="Insert Amount"
             type="number"
             variant="outlined"
-            onChange={(e) => setAmount(+e.target.value)}
+            onChange={(e) => setAmount(e.target.value)}
             value={amount}
             fullWidth={true}
           />
