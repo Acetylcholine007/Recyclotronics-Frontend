@@ -1,5 +1,5 @@
-// const API_URL = "https://recyclotronics.herokuapp.com";
-const API_URL = "http://localhost:8000";
+const API_URL = "https://recyclotronics.herokuapp.com";
+//const API_URL = "http://localhost:8000";
 
 const LS_USER_DATA = "userData";
 const TOKEN_EXPIRATION = new Date(new Date().getTime() + 1000 * 60 * 60);
