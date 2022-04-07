@@ -12,15 +12,18 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import RVMAPI from "../../../shared/apis/RVMAPI";
+import BinStatusBar from "../../../shared/components/BinStatusBar";
 
 const AdminDashboardPage = () => {
   const [binGauge, setBinGauge] = useState(0);
   const [collectionHistory, setCollectionHistory] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(async () => {
-    let response = await RVMAPI.getRVMData();
+    let response = await RVMAPI.getRVMData(setLoading(true));
     setBinGauge(response.data.binGauge);
     setCollectionHistory(response.data.collectionHistory);
+    setLoading(false)
   }, []);
 
   const sendNotificationHandler = () => {
@@ -34,12 +37,13 @@ const AdminDashboardPage = () => {
   return (
     <Container>
       <Grid container>
-        <Grid item md={6} xs={12}>
-          <Typography variant="h5">Reverse Vending Machine Status</Typography>
-          <h1>{binGauge} %</h1>
+        <Grid item md={6} xs={12} sx={{marginTop: "1rem"}}>
+        <Typography variant="h3" sx={{fontWeight: "bold"}}>Bin Status</Typography>
+          <Typography variant="h5" sx={{color: "#acacac"}}>Reverse Vending Machine Status</Typography>
+          <BinStatusBar binGauge={binGauge} loading={loading}/>
         </Grid>
-        <Grid item md={6} xs={12}>
-          <Typography variant="h5">Bin Collection History</Typography>
+        <Grid item md={6} xs={12} sx={{marginTop: "1rem"}}>
+          <Typography variant="h5" sx={{fontWeight: "bold"}}>Bin Collection History</Typography>
           <Table>
             <TableHead>
               <TableRow>
