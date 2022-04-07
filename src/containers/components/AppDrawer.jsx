@@ -4,44 +4,48 @@ import {
   Avatar,
   Button,
   Divider,
+  Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { adminRoutes } from "../../routes/AdminRoutes";
 import { userRoutes } from "../../routes/UserRoutes";
 import SmallBinStatusBar from "../../shared/components/SmallBinStatusBar";
 import "../../styles/AppDrawer.css";
 
-
-  let newPath = location.pathname;
-  if (newPath === "/") {
-    newPath = "/dashboard";
-  }
-  console.log(newPath);
+// let newPath = location.pathname;
+// if (newPath === "/") {
+//   newPath = "/dashboard";
+// }
+// console.log(newPath);
 
 const AppDrawer = ({ accountType, logoutHandler }) => {
   const history = useHistory();
-
+  const location = useLocation();
+  
   return (
     <>
       <div>
         <Toolbar>
-          <Stack direction='row' alignItems='center'>
-          <Avatar
-            sx={{ marginRight: "1rem" }}
-            alt="avatar"
-            src="/assets/images/eco.png"
-          />
-          <Typography variant="body1" sx={{fontWeight: 'bold'}}>Reverse Vending Machine</Typography>
+          <Stack direction="row" alignItems="center">
+            <Avatar
+              sx={{ marginRight: "1rem" }}
+              alt="avatar"
+              src="/assets/images/eco.png"
+            />
+            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+              Reverse Vending Machine
+            </Typography>
           </Stack>
         </Toolbar>
         <Divider />
         <div className="navlink-container">
           {(accountType === 1 ? userRoutes : adminRoutes).map((item, index) => (
-            <div className="link-wrapper">
+            <div className="link-wrapper" key={index}>
               <NavLink
                 to={item.path}
                 key={index}
@@ -57,7 +61,7 @@ const AppDrawer = ({ accountType, logoutHandler }) => {
         </div>
       </div>
       <div>
-        <h1 style={{textAlign: "center"}}>Bin Status</h1>
+        <h1 style={{ textAlign: "center" }}>Bin Status</h1>
         <SmallBinStatusBar />
       </div>
       <div
