@@ -61,6 +61,13 @@ const ReportPage = () => {
   const emptyRows =
     page > 1 ? Math.max(0, (1 + page) * rowsPerPage - 12) : 0;
 
+  //Atleast one button is active
+  const handleButton = (event, activeButton) => {
+    if (activeButton !== null) {
+      setTarget(activeButton);
+    }
+  };
+
   return (
     <Container align="center" sx={{marginTop: "1rem"}}>
       <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem"}}>
@@ -70,7 +77,7 @@ const ReportPage = () => {
         color="primary"
         value={target}
         exclusive
-        onChange={(event, val) => setTarget(val)}
+        onChange={handleButton}
       >
         <ToggleButton value="DEPOSIT" sx={{backgroundColor: "#146356", color: "#fff", border: "1px solid #146356"}}>Deposit</ToggleButton>
         <ToggleButton value="REDEEM" sx={{backgroundColor: "#146356", color: "#fff", border: "1px solid #146356"}}>Redeem</ToggleButton>
@@ -98,7 +105,8 @@ const ReportPage = () => {
               }
           </TableHead>
           <TableBody>
-            {loading ? <div style={target === "DEPOSIT" ? depositLoading : redeemLoading}><LinearProgress color="primary"/></div> : reports.map((report) => {
+            {loading ? <div style={target === "DEPOSIT" ? depositLoading : redeemLoading}><LinearProgress color="primary"/>
+            </div> : reports.map((report) => {
               const datetime = DateTime.fromISO(report.createdAt);
               if(target === "DEPOSIT"){
                 return (
@@ -128,7 +136,7 @@ const ReportPage = () => {
               }
             })}
             {emptyRows > 0 && (
-              <TableRow style={{ height: 12 * emptyRows }}>
+              <TableRow style={{ height: 9 * emptyRows }}>
                 <TableCell colSpan={4} />
               </TableRow>
             )}
@@ -141,14 +149,22 @@ const ReportPage = () => {
               <Button style={btnStyle} variant="outlined" endIcon={<NavigateNextIcon />} onClick={() => setPage(page + 1)}>
                 <h5>Next</h5>
               </Button> : 
-            <div>
-              <Button style={btnStyle} variant="outlined" startIcon={<NavigateBeforeIcon />} onClick={() => setPage(page - 1)}>
-                <h5>Back</h5>
-              </Button>
-              <Button style={btnStyle} variant="outlined" endIcon={<NavigateNextIcon />} onClick={() => setPage(page + 1)}>
-                <h5>Next</h5>
-              </Button>
-            </div>
+              <div>
+                {page <= totalItems ? 
+                  <Button style={btnStyle} variant="outlined" startIcon={<NavigateBeforeIcon />} onClick={() => setPage(page - 1)}>
+                    <h5>Back</h5>
+                  </Button>
+                  : 
+                  <div>
+                    <Button style={btnStyle} variant="outlined" startIcon={<NavigateBeforeIcon />} onClick={() => setPage(page - 1)}>
+                      <h5>Back</h5>
+                    </Button>
+                    <Button style={btnStyle} variant="outlined" endIcon={<NavigateNextIcon />} onClick={() => setPage(page + 1)}>
+                      <h5>Next</h5>
+                    </Button>
+                  </div>
+                }
+              </div>
             }
           </div>
         </TableFooter>
