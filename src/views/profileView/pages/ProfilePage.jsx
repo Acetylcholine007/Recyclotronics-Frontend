@@ -12,8 +12,8 @@ import {
   TableFooter,
   Paper,
   Button,
+  LinearProgress
 } from "@mui/material";
-import LinearProgress from '@mui/material/LinearProgress';
 import { DateTime } from "luxon";
 import React, { useContext, useEffect, useState } from "react";
 import TransactionAPI from "../../../shared/apis/TransactionAPI";

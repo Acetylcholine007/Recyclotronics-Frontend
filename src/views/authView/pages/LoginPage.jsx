@@ -15,7 +15,6 @@ import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../shared/contexts/AuthContext";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
-import background from "../../../assets/BG.png";
 import { useLocation } from "react-router-dom";
 
 const LoginPage = () => {
@@ -156,7 +155,7 @@ const LoginPage = () => {
         </Alert>
       </Snackbar>
       <img
-        src={background}
+        src='/assets/images/BG.png'
         alt="Background image"
         style={{ width: "100%", transform: "translateY(105px)" }}
       />

@@ -16,8 +16,8 @@ const login = async (email, password, callback, errorCallback) => {
     );
   } else {
     errorCallback(response.data.message || "Failed to login");
-    return response;
   }
+  return response;
 };
 
 const signup = async (fullname, email, password, callback, errorCallback) => {
@@ -33,6 +33,7 @@ const signup = async (fullname, email, password, callback, errorCallback) => {
   } else {
     errorCallback(response.data.message || "Failed to signup");
   }
+  return response;
 };
 
 const resendConfirmation = async (email, callback, errorCallback) => {
@@ -48,6 +49,7 @@ const resendConfirmation = async (email, callback, errorCallback) => {
   } else {
     errorCallback(response.data.message || "Failed to send verification");
   }
+  return response;
 };
 
 const AuthAPI = {

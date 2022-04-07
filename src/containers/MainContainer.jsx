@@ -8,6 +8,8 @@ import {
   Typography,
   IconButton,
   Avatar,
+  Card,
+  Stack,
 } from "@mui/material";
 import UserRoutes from "../routes/UserRoutes";
 import AdminRoutes from "../routes/AdminRoutes";
@@ -56,13 +58,16 @@ const MainContainer = ({ window }) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", backgroundColor: "#FBFBFE", width: '100vw' }}>
       <CssBaseline />
       <AppBar
+        elevation={0}
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          color: "black",
+          backgroundColor: "#FBFBFE",
         }}
       >
         <Toolbar>
@@ -78,14 +83,18 @@ const MainContainer = ({ window }) => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             {appbarTitleSelector()}
           </Typography>
-          <Avatar
-            sx={{ marginRight: "1rem" }}
-            alt="avatar"
-            src="https://media.istockphoto.com/photos/orange-slice-picture-id1163872349?k=20&m=1163872349&s=612x612&w=0&h=1oVhcd6gYzgvDCVJVqJN_6mPUnHCd9uYQk5rZ3Il_9s="
-          />
-          <Typography variant="h6">
-            {auth.accountType === 1 ? "User" : "Admin"}
-          </Typography>
+          <Card sx={{ padding: "0.5rem" }} elevation={0}>
+            <Stack direction="row" alignItems="center">
+              <Avatar
+                sx={{ marginRight: "1rem" }}
+                alt="avatar"
+                src="https://media.istockphoto.com/photos/orange-slice-picture-id1163872349?k=20&m=1163872349&s=612x612&w=0&h=1oVhcd6gYzgvDCVJVqJN_6mPUnHCd9uYQk5rZ3Il_9s="
+              />
+              <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                {auth.accountType === 1 ? "User" : "Admin"}
+              </Typography>
+            </Stack>
+          </Card>
         </Toolbar>
       </AppBar>
       <Box
@@ -106,6 +115,7 @@ const MainContainer = ({ window }) => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              borderWidth: 0,
             },
           }}
         >
@@ -121,6 +131,7 @@ const MainContainer = ({ window }) => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              borderWidth: 0,
             },
           }}
           open
@@ -131,7 +142,12 @@ const MainContainer = ({ window }) => {
           />
         </Drawer>
       </Box>
-      <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+          minHeight: "100vh",
+        }}
+      >
         <Toolbar />
         {auth.accountType === 1 && <UserRoutes />}
         {auth.accountType === 2 && <AdminRoutes />}
