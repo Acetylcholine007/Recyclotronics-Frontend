@@ -61,8 +61,11 @@ const AppDrawer = ({ accountType, logoutHandler }) => {
         </div>
       </div>
       <div>
-        <h1 style={{ textAlign: "center" }}>Bin Status</h1>
-        <SmallBinStatusBar />
+        {location.pathname === "/dashboard" || location.pathname === "/" ? null : <div>
+            <h1 style={{ textAlign: "center" }}>Bin Status</h1>
+            <SmallBinStatusBar />
+          </div>
+        }
       </div>
       <div
         style={{

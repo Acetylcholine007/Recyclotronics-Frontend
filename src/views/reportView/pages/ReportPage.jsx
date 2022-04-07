@@ -58,8 +58,8 @@ const ReportPage = () => {
   }
 
   //For empty rows in table
-  const emptyRows =
-    page > 1 ? Math.max(0, (1 + page) * rowsPerPage - 12) : 0;
+  // const emptyRows =
+  //   page > 1 ? Math.max(0, (1 + page) * rowsPerPage - 12) : 0;
 
   //Atleast one button is active
   const handleButton = (event, activeButton) => {
@@ -135,11 +135,11 @@ const ReportPage = () => {
                 );
               }
             })}
-            {emptyRows > 0 && (
+            {/* {emptyRows > 0 && (
               <TableRow style={{ height: 9 * emptyRows }}>
                 <TableCell colSpan={4} />
               </TableRow>
-            )}
+            )} */}
           </TableBody>
         </Table>
         <TableFooter>
