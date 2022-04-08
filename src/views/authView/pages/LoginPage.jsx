@@ -82,7 +82,7 @@ const LoginPage = () => {
         payload: {
           message: "Open verification email sent to you before logging in.",
           isOpen: true,
-          severity: "indo",
+          severity: "info",
         },
       });
     }

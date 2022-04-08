@@ -1,12 +1,9 @@
 import { AccountBalanceWalletRounded } from "@mui/icons-material";
 import {
-  Alert,
   Avatar,
-  Box,
   Button,
   Card,
   Container,
-  Snackbar,
   Stack,
   TextField,
   Toolbar,
@@ -24,6 +21,7 @@ const WalletPage = () => {
   const { snackbarDispatch } = useContext(SnackbarContext);
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(async () => {
     let user = await UserAPI.getUserData(auth.userId, setLoading(true));
