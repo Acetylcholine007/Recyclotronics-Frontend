@@ -16,6 +16,7 @@ import React, { useContext, useEffect, useState } from "react";
 import TransactionAPI from "../../../shared/apis/TransactionAPI";
 import UserAPI from "../../../shared/apis/UserAPI";
 import { AuthContext } from "../../../shared/contexts/AuthContext";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const WalletPage = () => {
   const auth = useContext(AuthContext);
@@ -23,35 +24,49 @@ const WalletPage = () => {
   const [amount, setAmount] = useState('');
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [loading, setLoading] = useState(true)
 
   useEffect(async () => {
-    let user = await UserAPI.getUserData(auth.userId);
+    let user = await UserAPI.getUserData(auth.userId, setLoading(true));
     setBalance(user.data.balance);
+    setLoading(false)
   }, []);
 
   const cashoutHandler = async () => {
-    const response = await TransactionAPI.redeem(amount);
+    const response = await TransactionAPI.redeem(amount, setLoading(false));
     console.log(response);
     if (response.status === 200) {
       setIsSuccess(true);
       setBalance(response.data.balance);
       setShowSnackbar(true);
+      setLoading(false)
     } else {
       setIsSuccess(false);
       setShowSnackbar(true);
+      setLoading(false)
     }
     console.log(response);
   };
 
+  //loading style
+const loadingWallet = {
+  width: "100%",
+  marginTop: "0.85rem"
+}
+
   return (
     <Container align="center">
       <Toolbar>
-        <Avatar>
-          <AccountBalanceWalletRounded />
+        <Avatar sx={{backgroundColor: "#cbf2ff", padding: "2rem"}}>
+          <AccountBalanceWalletRounded sx={{color: "#0f5fc2", fontSize: "2.25rem"}}/>
         </Avatar>
         <Stack sx={{ marginLeft: "1rem" }} alignItems="flex-start">
-          <Typography variant="body1">Balance</Typography>
-          <Typography variant="h6">{balance}</Typography>
+          <Typography variant="h5" sx={{fontWeight: "500", color: "#acacac"}}>Balance</Typography>
+          {loading ? 
+            <div style={loadingWallet}><LinearProgress color="primary"/></div> 
+            : 
+              <Typography variant="h4" sx={{fontWeight: "bold", color: "#333333"}}>{balance}</Typography>
+          }
         </Stack>
       </Toolbar>
       <Card sx={{ padding: "2rem", margin: "4rem" }}>
@@ -65,12 +80,12 @@ const WalletPage = () => {
             value={amount}
             fullWidth={true}
           />
-          <Button variant="contained" onClick={cashoutHandler} fullWidth={true}>
+          <Button variant="contained" onClick={cashoutHandler} fullWidth={true} sx={{fontWeight:"bold", padding: "0.85rem", fontSize: "1.25rem", borderRadius: "20px", backgroundColor: "#146356"}}>
             PROCESS
           </Button>
-          <Typography variant="body2">The final amount could change</Typography>
-          <Typography variant="body2">
-            depending on the market conditions
+          <Typography variant="h6" sx={{fontWeight: "400", color: "#8c8fa7" }}>The final amount could change</Typography>
+          <Typography variant="h6" sx={{fontWeight: "400", color: "#8c8fa7" }}>
+            depending on the market conditions.
           </Typography>
         </Stack>
       </Card>
