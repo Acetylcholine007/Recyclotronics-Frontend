@@ -16,6 +16,7 @@ import { userRoutes } from "../../routes/UserRoutes";
 import RVMAPI from "../../shared/apis/RVMAPI";
 import SmallBinStatusBar from "../../shared/components/SmallBinStatusBar";
 import "../../styles/AppDrawer.css";
+import logoURI from "/images/eco.png";
 
 const AppDrawer = ({ accountType, logoutHandler }) => {
   const history = useHistory();
@@ -32,11 +33,7 @@ const AppDrawer = ({ accountType, logoutHandler }) => {
       <div>
         <Toolbar>
           <Stack direction="row" alignItems="center">
-            <Avatar
-              sx={{ marginRight: "1rem" }}
-              alt="avatar"
-              src="/assets/images/eco.png"
-            />
+            <Avatar sx={{ marginRight: "1rem" }} alt="avatar" src={logoURI} />
             <Typography variant="body1" sx={{ fontWeight: "bold" }}>
               Reverse Vending Machine
             </Typography>

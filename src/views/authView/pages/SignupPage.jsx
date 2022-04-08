@@ -17,6 +17,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
+import backgroundUrl from "/images/BG.png"
 
 const SignupPage = () => {
   const [fullname, setFullname] = useState("");
@@ -120,7 +121,7 @@ const SignupPage = () => {
         </Stack>
       </Container>
       <img
-        src="/assets/images/BG.png"
+        src={backgroundUrl}
         alt="Background image"
         style={{ width: "100%", transform: "translateY(65px)" }}
       />

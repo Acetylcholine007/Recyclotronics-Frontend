@@ -2,14 +2,11 @@ import {
   Box,
   Card,
   CircularProgress,
-  Container,
-  LinearProgress,
-  List,
-  ListItem,
   Stack,
   Typography,
 } from "@mui/material";
 import React from "react";
+import imageURI from "/images/Input.png";
 
 const PromptPage = () => {
   return (
@@ -32,16 +29,10 @@ const PromptPage = () => {
           and wait for the result to be displayed here
         </Typography>
       </Card>
-      <img
-        src="../assets/images/Input.png"
-        alt="input image"
-        style={{ width: "20rem" }}
-      />
+      <img src={imageURI} alt="input image" style={{ width: "20rem" }} />
       <Box sx={{ width: "100%" }}>
         <CircularProgress />
-        <Typography variant="h6">
-          Waiting for RVM machine response
-        </Typography>
+        <Typography variant="h6">Waiting for RVM machine response</Typography>
       </Box>
     </Stack>
   );

@@ -15,6 +15,7 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import { useLocation } from "react-router-dom";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
+import backgroundUrl from "/images/BG.png"
 
 const LoginPage = () => {
   const auth = useContext(AuthContext);
@@ -153,7 +154,7 @@ const LoginPage = () => {
         </Stack>
       </Container>
       <img
-        src="/assets/images/BG.png"
+        src={backgroundUrl}
         alt="Background image"
         style={{ width: "100%", transform: "translateY(105px)" }}
       />

@@ -21,6 +21,8 @@ import { AuthContext } from "../../../shared/contexts/AuthContext";
 import ExtraSmallBinStatus from "../../../shared/components/ExtraSmallBinStatus";
 import LinearProgress from "@mui/material/LinearProgress";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
+import vendingMachineURI from "/images/vending-machine.png"
+import pointURI from "/images/point.png"
 
 const UserDashboardPage = () => {
   const [scraps, setScraps] = useState([]);
@@ -115,7 +117,7 @@ const UserDashboardPage = () => {
                 your E-waste
               </Typography>
               <img
-                src="/assets/images/vending-machine.png"
+                src={vendingMachineURI}
                 alt="vending machine"
                 style={{ width: "10rem" }}
               />
@@ -192,7 +194,7 @@ const UserDashboardPage = () => {
               elevation={0}
             >
               <img
-                src="/assets/images/point.png"
+                src={pointURI}
                 alt="points"
                 style={{ height: "5rem" }}
               />
