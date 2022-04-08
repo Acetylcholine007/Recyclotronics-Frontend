@@ -10,20 +10,19 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthAPI from "../../../shared/apis/AuthAPI";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
+import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
 
 const SignupPage = () => {
   const [fullname, setFullname] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const [isInfo, setIsInfo] = useState(false);
+  const { snackbarDispatch } = useContext(SnackbarContext);
   const history = useHistory();
 
   const signupHandler = async (event) => {
@@ -32,11 +31,17 @@ const SignupPage = () => {
       fullname,
       email,
       password,
-      (isSuccess) => history.push({pathname: "/login", state: {toVerify: isSuccess}}),
+      (isSuccess) =>
+        history.push({ pathname: "/login", state: { toVerify: isSuccess } }),
       (message) => {
-        setSnackbarMessage(message);
-        setIsInfo(false);
-        setShowSnackbar(true);
+        snackbarDispatch({
+          type: "SET_PARAMS",
+          payload: {
+            message: message,
+            isOpen: true,
+            severity: "error",
+          },
+        });
       }
     );
   };
@@ -114,25 +119,8 @@ const SignupPage = () => {
           </Stack>
         </Stack>
       </Container>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        open={showSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setShowSnackbar(false)}
-      >
-        <Alert
-          onClose={() => setShowSnackbar(false)}
-          severity={isInfo ? "info" : "error"}
-          variant="filled"
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
       <img
-        src='/assets/images/BG.png'
+        src="/assets/images/BG.png"
         alt="Background image"
         style={{ width: "100%", transform: "translateY(65px)" }}
       />

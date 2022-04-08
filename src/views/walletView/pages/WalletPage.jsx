@@ -17,14 +17,13 @@ import TransactionAPI from "../../../shared/apis/TransactionAPI";
 import UserAPI from "../../../shared/apis/UserAPI";
 import { AuthContext } from "../../../shared/contexts/AuthContext";
 import LinearProgress from '@mui/material/LinearProgress';
+import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
 
 const WalletPage = () => {
   const auth = useContext(AuthContext);
+  const { snackbarDispatch } = useContext(SnackbarContext);
   const [balance, setBalance] = useState(0);
-  const [amount, setAmount] = useState('');
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [loading, setLoading] = useState(true)
+  const [amount, setAmount] = useState("");
 
   useEffect(async () => {
     let user = await UserAPI.getUserData(auth.userId, setLoading(true));
@@ -36,14 +35,24 @@ const WalletPage = () => {
     const response = await TransactionAPI.redeem(amount, setLoading(false));
     console.log(response);
     if (response.status === 200) {
-      setIsSuccess(true);
       setBalance(response.data.balance);
-      setShowSnackbar(true);
-      setLoading(false)
+      snackbarDispatch({
+        type: "SET_PARAMS",
+        payload: {
+          message: response.message,
+          isOpen: true,
+          severity: "success",
+        },
+      });
     } else {
-      setIsSuccess(false);
-      setShowSnackbar(true);
-      setLoading(false)
+      snackbarDispatch({
+        type: "SET_PARAMS",
+        payload: {
+          message: response.data.message || response.message,
+          isOpen: true,
+          severity: "error",
+        },
+      });
     }
     console.log(response);
   };
@@ -89,25 +98,6 @@ const loadingWallet = {
           </Typography>
         </Stack>
       </Card>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        open={showSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setShowSnackbar(false)}
-      >
-        <Alert
-          onClose={() => setShowSnackbar(false)}
-          severity={isSuccess ? "success" : "error"}
-          variant="filled"
-        >
-          {isSuccess
-            ? "Amount successfully redeemed. Check your email"
-            : "Failed to redeem amount"}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };

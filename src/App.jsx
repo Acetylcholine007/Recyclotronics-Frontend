@@ -5,6 +5,7 @@ import AuthContextProvider from "./shared/contexts/AuthContext";
 import { useAuth } from "./shared/hooks/useAuth";
 import MainContainer from "./containers/MainContainer";
 import AuthContainer from "./containers/AuthContainer";
+import SnackbarContextProvider from "./shared/contexts/SnackbarContext";
 
 const theme = createTheme({
   palette: {
@@ -14,23 +15,26 @@ const theme = createTheme({
 });
 
 function App() {
-  const { token, login, logout, userId, accountType } = useAuth();
+  const { token, login, logout, userId, accountType, fullname } = useAuth();
 
   return (
     <ThemeProvider theme={theme}>
-      <AuthContextProvider
-        value={{
-          isLoggedIn: !!token,
-          token: token,
-          userId: userId,
-          accountType: accountType,
-          login: login,
-          logout: logout,
-        }}
-      >
-        {!!token && <MainContainer />}
-        {!token && <AuthContainer />}
-      </AuthContextProvider>
+      <SnackbarContextProvider>
+        <AuthContextProvider
+          value={{
+            isLoggedIn: !!token,
+            token: token,
+            userId: userId,
+            accountType: accountType,
+            fullname: fullname,
+            login: login,
+            logout: logout,
+          }}
+        >
+          {!!token && <MainContainer />}
+          {!token && <AuthContainer />}
+        </AuthContextProvider>
+      </SnackbarContextProvider>
     </ThemeProvider>
   );
 }

@@ -6,8 +6,6 @@ import {
   TextField,
   Typography,
   InputAdornment,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import AuthAPI from "../../../shared/apis/AuthAPI";
@@ -16,14 +14,13 @@ import { AuthContext } from "../../../shared/contexts/AuthContext";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import { useLocation } from "react-router-dom";
+import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
 
 const LoginPage = () => {
   const auth = useContext(AuthContext);
+  const { snackbarDispatch } = useContext(SnackbarContext);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const [isInfo, setIsInfo] = useState(false);
   const [showResendVerification, setShowResendVerification] = useState(false);
   const history = useHistory();
   const location = useLocation();
@@ -35,13 +32,18 @@ const LoginPage = () => {
       password,
       auth.login,
       (message) => {
-        setSnackbarMessage(message);
-        setIsInfo(false);
-        setShowSnackbar(true);
+        snackbarDispatch({
+          type: "SET_PARAMS",
+          payload: {
+            message: message,
+            isOpen: true,
+            severity: "error",
+          },
+        });
       }
     );
     if (response.status === 403) {
-      console.log('reached')
+      console.log("reached");
       setShowResendVerification(true);
     }
     history.push("/");
@@ -51,25 +53,38 @@ const LoginPage = () => {
     await AuthAPI.resendConfirmation(
       email,
       (message) => {
-        setSnackbarMessage(message);
-        setIsInfo(true);
-        setShowSnackbar(true);
+        snackbarDispatch({
+          type: "SET_PARAMS",
+          payload: {
+            message: message,
+            isOpen: true,
+            severity: "info",
+          },
+        });
       },
       (message) => {
-        setSnackbarMessage(message);
-        setIsInfo(false);
-        setShowSnackbar(true);
+        snackbarDispatch({
+          type: "SET_PARAMS",
+          payload: {
+            message: message,
+            isOpen: true,
+            severity: "error",
+          },
+        });
       }
     );
   };
 
   useEffect(() => {
     if (location.state?.toVerify) {
-      setSnackbarMessage(
-        "Open verification email sent to you before logging in."
-      );
-      setIsInfo(true);
-      setShowSnackbar(true);
+      snackbarDispatch({
+        type: "SET_PARAMS",
+        payload: {
+          message: "Open verification email sent to you before logging in.",
+          isOpen: true,
+          severity: "indo",
+        },
+      });
     }
   }, []);
 
@@ -137,25 +152,8 @@ const LoginPage = () => {
           </Stack>
         </Stack>
       </Container>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        open={showSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setShowSnackbar(false)}
-      >
-        <Alert
-          onClose={() => setShowSnackbar(false)}
-          severity={isInfo ? "info" : "error"}
-          variant="filled"
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
       <img
-        src='/assets/images/BG.png'
+        src="/assets/images/BG.png"
         alt="Background image"
         style={{ width: "100%", transform: "translateY(105px)" }}
       />

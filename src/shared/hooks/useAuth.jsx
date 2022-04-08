@@ -8,11 +8,14 @@ export const useAuth = () => {
   const [token, setToken] = useState(false);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
   const [userId, setUserId] = useState(null);
+  const [fullname, setFullname] = useState(null);
   const [accountType, setAccountType] = useState(null);
   const history = useHistory();
 
-  const login = useCallback((uid, token, type, expirationDate) => {
+  const login = useCallback((uid, token, type, name, expirationDate) => {
+    console.log(name);
     const tokenExpirationDate = expirationDate || TOKEN_EXPIRATION;
+    console.log(tokenExpirationDate);
     setTokenExpirationDate(tokenExpirationDate);
     localStorage.setItem(
       LS_USER_DATA,
@@ -20,11 +23,13 @@ export const useAuth = () => {
         userId: uid,
         token,
         accountType: type,
+        fullname: name,
         expiration: tokenExpirationDate.toISOString(),
       })
     );
     setUserId(uid);
     setAccountType(type);
+    setFullname(name);
     setToken(token);
   }, []);
 
@@ -32,8 +37,9 @@ export const useAuth = () => {
     setToken(null);
     setTokenExpirationDate(null);
     setUserId(null);
+    setFullname(null);
     localStorage.removeItem(LS_USER_DATA);
-    history.push('/');
+    history.push("/");
   }, []);
 
   useEffect(() => {
@@ -57,10 +63,11 @@ export const useAuth = () => {
         storedData.userId,
         storedData.token,
         storedData.accountType,
+        storedData.fullname,
         new Date(storedData.expiration)
       );
     }
   }, [login]);
 
-  return { token, login, logout, userId, accountType };
+  return { token, login, logout, userId, accountType, fullname };
 };

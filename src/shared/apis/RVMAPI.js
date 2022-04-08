@@ -18,8 +18,8 @@ const initiateScan = async () => {
   );
   if (response) {
     console.log(response);
-    return response;
   }
+  return response;
 };
 
 const collect = async () => {

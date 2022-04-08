@@ -12,7 +12,8 @@ const login = async (email, password, callback, errorCallback) => {
     callback(
       response.data.userId,
       response.data.token,
-      response.data.accountType
+      response.data.accountType,
+      response.data.fullname
     );
   } else {
     errorCallback(response.data.message || "Failed to login");

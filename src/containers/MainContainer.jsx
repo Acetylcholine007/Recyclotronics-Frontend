@@ -1,7 +1,6 @@
 import {
   AppBar,
   Box,
-  Button,
   CssBaseline,
   Drawer,
   Toolbar,
@@ -10,6 +9,8 @@ import {
   Avatar,
   Card,
   Stack,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import UserRoutes from "../routes/UserRoutes";
 import AdminRoutes from "../routes/AdminRoutes";
@@ -19,11 +20,13 @@ import { useLocation } from "react-router-dom";
 import { Menu } from "@mui/icons-material";
 import AppDrawer from "./components/AppDrawer";
 import { useHistory } from "react-router-dom";
+import { SnackbarContext } from "../shared/contexts/SnackbarContext";
 
 const drawerWidth = 240;
 
 const MainContainer = ({ window }) => {
   const auth = useContext(AuthContext);
+  const {snackbarParams, snackbarDispatch} = useContext(SnackbarContext);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const history = useHistory();
@@ -58,7 +61,7 @@ const MainContainer = ({ window }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#FBFBFE", width: '100vw' }}>
+    <Box sx={{ display: "flex", backgroundColor: "#FBFBFE", width: "100vw" }}>
       <CssBaseline />
       <AppBar
         elevation={0}
@@ -91,7 +94,8 @@ const MainContainer = ({ window }) => {
                 src="https://media.istockphoto.com/photos/orange-slice-picture-id1163872349?k=20&m=1163872349&s=612x612&w=0&h=1oVhcd6gYzgvDCVJVqJN_6mPUnHCd9uYQk5rZ3Il_9s="
               />
               <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                {auth.accountType === 1 ? "User" : "Admin"}
+                {/* {auth.accountType === 1 ? "User" : "Admin"} */}
+                {auth.fullname}
               </Typography>
             </Stack>
           </Card>
@@ -151,6 +155,23 @@ const MainContainer = ({ window }) => {
         <Toolbar />
         {auth.accountType === 1 && <UserRoutes />}
         {auth.accountType === 2 && <AdminRoutes />}
+        <Snackbar
+          anchorOrigin={{
+            vertical: snackbarParams.vertical,
+            horizontal: snackbarParams.horizontal,
+          }}
+          open={snackbarParams.isOpen}
+          autoHideDuration={snackbarParams.duration}
+          onClose={() => snackbarDispatch({ type: "SET_SHOW", payload: false })}
+        >
+          <Alert
+            onClose={() => snackbarDispatch({ type: "SET_SHOW", payload: false })}
+            severity={snackbarParams.severity}
+            variant="filled"
+          >
+            {snackbarParams.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </Box>
   );

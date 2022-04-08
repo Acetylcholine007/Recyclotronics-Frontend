@@ -1,6 +1,5 @@
-import { Inbox, LogoutOutlined, Mail } from "@mui/icons-material";
+import { LogoutOutlined } from "@mui/icons-material";
 import {
-  AppBar,
   Avatar,
   Button,
   Divider,
@@ -8,25 +7,26 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { adminRoutes } from "../../routes/AdminRoutes";
 import { userRoutes } from "../../routes/UserRoutes";
+import RVMAPI from "../../shared/apis/RVMAPI";
 import SmallBinStatusBar from "../../shared/components/SmallBinStatusBar";
 import "../../styles/AppDrawer.css";
-
-// let newPath = location.pathname;
-// if (newPath === "/") {
-//   newPath = "/dashboard";
-// }
-// console.log(newPath);
 
 const AppDrawer = ({ accountType, logoutHandler }) => {
   const history = useHistory();
   const location = useLocation();
-  
+  const [binGauge, setBinGauge] = useState(0);
+
+  useEffect(async () => {
+    let response = await RVMAPI.getRVMData();
+    setBinGauge(response.data.binGauge);
+  }, []);
+
   return (
     <>
       <div>
@@ -61,11 +61,13 @@ const AppDrawer = ({ accountType, logoutHandler }) => {
         </div>
       </div>
       <div>
-        {location.pathname === "/dashboard" || location.pathname === "/" ? null : <div>
+        {location.pathname === "/dashboard" ||
+        location.pathname === "/" ? null : (
+          <div>
             <h1 style={{ textAlign: "center" }}>Bin Status</h1>
-            <SmallBinStatusBar />
+            <SmallBinStatusBar binGauge={binGauge} />
           </div>
-        }
+        )}
       </div>
       <div
         style={{

@@ -21,8 +21,8 @@ const updateScrap = async (scrap) => {
   );
   if (response) {
     console.log(response);
-    return response;
   }
+  return response;
 };
 
 const ScrapAPI = {
