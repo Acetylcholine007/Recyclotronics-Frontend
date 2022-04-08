@@ -44,7 +44,7 @@ export default UserRoutes;
 
 export const userRoutes = [
   {
-    title: "Dashbaord",
+    title: "Dashboard",
     icon: <DashboardRounded />,
     path: "/dashboard",
   },
