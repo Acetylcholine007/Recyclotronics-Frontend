@@ -63,9 +63,9 @@ const ProfilePage = () => {
     width: "120%",
   }
 
-  //For empty rows in table
-  const emptyRows =
-    page > 1 ? Math.max(0, (1 + page) * rowsPerPage - 12) : 0;
+  // //For empty rows in table
+  // const emptyRows =
+  //   page > 1 ? Math.max(0, (1 + page) * rowsPerPage - 12) : 0;
 
   //Atleast one button is active
   const handleButton = (event, activeButton) => {
@@ -136,11 +136,11 @@ const ProfilePage = () => {
                 )
               }
             })}
-            {emptyRows > 0 && (
+            {/* {emptyRows > 0 && (
                 <TableRow style={{ height: 12 * emptyRows }}>
                   <TableCell colSpan={4} />
                 </TableRow>
-              )}
+              )} */}
           </TableBody>
         </Table>
         <TableFooter>
