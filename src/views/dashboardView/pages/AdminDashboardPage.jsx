@@ -133,10 +133,10 @@ const AdminDashboardPage = () => {
             </TableBody>
           </Table>
           <Stack spacing={2}>
-            <Button variant="contained" onClick={sendNotificationHandler}>
+            <Button variant="contained" sx={{backgroundColor: "#146356"}} onClick={sendNotificationHandler}>
               SEND NOTIFICATION
             </Button>
-            <Button variant="contained" onClick={collectHandler}>
+            <Button variant="contained" sx={{backgroundColor: "#146356"}} onClick={collectHandler}>
               COLLECT
             </Button>
           </Stack>

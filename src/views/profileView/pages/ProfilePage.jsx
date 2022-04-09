@@ -96,14 +96,14 @@ const ProfilePage = () => {
               {target === "DEPOSIT" ? 
               <TableRow>
                 <TableCell>Transaction ID</TableCell>
-                <TableCell>Date Time</TableCell>
+                <TableCell>Date & Time</TableCell>
                 <TableCell>E-waste</TableCell>
                 <TableCell>Points</TableCell>
               </TableRow>
               : 
               <TableRow>
                 <TableCell>Transaction ID</TableCell>
-                <TableCell>Date Time</TableCell>
+                <TableCell>Date & Time</TableCell>
                 <TableCell>Amount</TableCell>
               </TableRow>
               }
@@ -151,7 +151,7 @@ const ProfilePage = () => {
                   <h5>Next</h5>
                 </Button> : 
                 <div>
-                  { page <= totalItems ? 
+                  { page <= rowsPerPage ? 
                     <Button style={btnStyle} variant="outlined" startIcon={<NavigateBeforeIcon />} onClick={() => setPage(page - 1)}>
                       <h5>Back</h5>
                     </Button>
