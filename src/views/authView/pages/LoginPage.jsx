@@ -153,11 +153,17 @@ const LoginPage = () => {
           </Stack>
         </Stack>
       </Container>
-      <img
+      <div style={{
+          position: "absolute",
+          width: "-webkit-fill-available",
+          bottom: "0"
+      }}>
+        <img
         src={backgroundUrl}
         alt="Background image"
-        style={{ width: "100%", transform: "translateY(105px)" }}
-      />
+        style={{ width: "100%"}}
+        />
+      </div>
     </Box>
   );
 };
