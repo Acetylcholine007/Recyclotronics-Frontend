@@ -13,12 +13,14 @@ import React, { useContext, useEffect, useState } from "react";
 import TransactionAPI from "../../../shared/apis/TransactionAPI";
 import UserAPI from "../../../shared/apis/UserAPI";
 import { AuthContext } from "../../../shared/contexts/AuthContext";
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from "@mui/material/LinearProgress";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
+import { LoadingContext } from "../../../shared/contexts/LoadingContext";
 
 const WalletPage = () => {
   const auth = useContext(AuthContext);
   const { snackbarDispatch } = useContext(SnackbarContext);
+  const { loadingDispatch } = useContext(LoadingContext);
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,10 +28,11 @@ const WalletPage = () => {
   useEffect(async () => {
     let user = await UserAPI.getUserData(auth.userId, setLoading(true));
     setBalance(user.data.balance);
-    setLoading(false)
+    setLoading(false);
   }, []);
 
   const cashoutHandler = async () => {
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: true } });
     const response = await TransactionAPI.redeem(amount, setLoading(false));
     console.log(response);
     if (response.status === 200) {
@@ -52,28 +55,40 @@ const WalletPage = () => {
         },
       });
     }
-    console.log(response);
+    setAmount("");
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
   };
 
   //loading style
-const loadingWallet = {
-  width: "100%",
-  marginTop: "0.85rem"
-}
+  const loadingWallet = {
+    width: "100%",
+    marginTop: "0.85rem",
+  };
 
   return (
     <Container align="center">
       <Toolbar>
-        <Avatar sx={{backgroundColor: "#cbf2ff", padding: "2rem"}}>
-          <AccountBalanceWalletRounded sx={{color: "#0f5fc2", fontSize: "2.25rem"}}/>
+        <Avatar sx={{ backgroundColor: "#cbf2ff", padding: "2rem" }}>
+          <AccountBalanceWalletRounded
+            sx={{ color: "#0f5fc2", fontSize: "2.25rem" }}
+          />
         </Avatar>
         <Stack sx={{ marginLeft: "1rem" }} alignItems="flex-start">
-          <Typography variant="h5" sx={{fontWeight: "500", color: "#acacac"}}>Balance</Typography>
-          {loading ? 
-            <div style={loadingWallet}><LinearProgress color="primary"/></div> 
-            : 
-              <Typography variant="h4" sx={{fontWeight: "bold", color: "#333333"}}>{balance}</Typography>
-          }
+          <Typography variant="h5" sx={{ fontWeight: "500", color: "#acacac" }}>
+            Balance
+          </Typography>
+          {loading ? (
+            <div style={loadingWallet}>
+              <LinearProgress color="primary" />
+            </div>
+          ) : (
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: "bold", color: "#333333" }}
+            >{`₱ ${balance
+              .toFixed(2)
+              .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`}</Typography>
+          )}
         </Stack>
       </Toolbar>
       <Card sx={{ padding: "2rem", margin: "4rem" }}>
@@ -87,11 +102,24 @@ const loadingWallet = {
             value={amount}
             fullWidth={true}
           />
-          <Button variant="contained" onClick={cashoutHandler} fullWidth={true} sx={{fontWeight:"bold", padding: "0.85rem", fontSize: "1.25rem", borderRadius: "20px", backgroundColor: "#146356"}}>
+          <Button
+            variant="contained"
+            onClick={cashoutHandler}
+            fullWidth={true}
+            sx={{
+              fontWeight: "bold",
+              padding: "0.85rem",
+              fontSize: "1.25rem",
+              borderRadius: "20px",
+              backgroundColor: "#146356",
+            }}
+          >
             PROCESS
           </Button>
-          <Typography variant="h6" sx={{fontWeight: "400", color: "#8c8fa7" }}>The final amount could change</Typography>
-          <Typography variant="h6" sx={{fontWeight: "400", color: "#8c8fa7" }}>
+          <Typography variant="h6" sx={{ fontWeight: "400", color: "#8c8fa7" }}>
+            The final amount could change
+          </Typography>
+          <Typography variant="h6" sx={{ fontWeight: "400", color: "#8c8fa7" }}>
             depending on the market conditions.
           </Typography>
         </Stack>

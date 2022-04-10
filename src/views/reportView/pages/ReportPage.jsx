@@ -130,7 +130,7 @@ const ReportPage = () => {
                     <TableCell>
                       {datetime.toLocaleString(DateTime.DATETIME_MED)}
                     </TableCell>
-                    <TableCell>{report.data.amount}</TableCell>
+                    <TableCell>{`₱ ${(+report.data.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`}</TableCell>
                   </TableRow>
                 );
               }

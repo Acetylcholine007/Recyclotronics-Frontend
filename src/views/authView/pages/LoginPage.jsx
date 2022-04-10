@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
   InputAdornment,
+  IconButton,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import AuthAPI from "../../../shared/apis/AuthAPI";
@@ -15,18 +16,23 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import { useLocation } from "react-router-dom";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
-import backgroundUrl from "/images/BG.png"
+import backgroundUrl from "/images/BG.png";
+import { LoadingContext } from "../../../shared/contexts/LoadingContext";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginPage = () => {
   const auth = useContext(AuthContext);
   const { snackbarDispatch } = useContext(SnackbarContext);
+  const { loadingDispatch } = useContext(LoadingContext);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [showResendVerification, setShowResendVerification] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const location = useLocation();
 
   const loginHandler = async (event) => {
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: true } });
     event.preventDefault();
     const response = await AuthAPI.login(
       email,
@@ -47,10 +53,12 @@ const LoginPage = () => {
       console.log("reached");
       setShowResendVerification(true);
     }
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
     history.push("/");
   };
 
   const verificationHandler = async () => {
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: true } });
     await AuthAPI.resendConfirmation(
       email,
       (message) => {
@@ -74,6 +82,7 @@ const LoginPage = () => {
         });
       }
     );
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
   };
 
   useEffect(() => {
@@ -119,7 +128,7 @@ const LoginPage = () => {
           <TextField
             id="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             variant="outlined"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
@@ -128,6 +137,13 @@ const LoginPage = () => {
               startAdornment: (
                 <InputAdornment position="start">
                   <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 </InputAdornment>
               ),
             }}
@@ -153,15 +169,20 @@ const LoginPage = () => {
           </Stack>
         </Stack>
       </Container>
-      <div style={{
+      <div
+        style={{
           position: "absolute",
           width: "-webkit-fill-available",
-          bottom: "0"
-      }}>
+          bottom: "0",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+        }}
+      >
         <img
-        src={backgroundUrl}
-        alt="Background image"
-        style={{ width: "100%"}}
+          src={backgroundUrl}
+          alt="Background image"
+          style={{ width: "100%" }}
         />
       </div>
     </Box>

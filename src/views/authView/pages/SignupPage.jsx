@@ -9,6 +9,7 @@ import {
   InputAdornment,
   Snackbar,
   Alert,
+  IconButton,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -17,24 +18,32 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
-import backgroundUrl from "/images/BG.png"
+import backgroundUrl from "/images/BG.png";
+import { LoadingContext } from "../../../shared/contexts/LoadingContext";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {
   const [fullname, setFullname] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const { snackbarDispatch } = useContext(SnackbarContext);
   const history = useHistory();
+  const { loadingDispatch } = useContext(LoadingContext);
 
   const signupHandler = async (event) => {
     event.preventDefault();
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: true } });
     await AuthAPI.signup(
       fullname,
       email,
       password,
-      (isSuccess) =>
-        history.push({ pathname: "/login", state: { toVerify: isSuccess } }),
+      (isSuccess) => {
+        loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
+        history.push({ pathname: "/login", state: { toVerify: isSuccess } });
+      },
       (message) => {
+        loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
         snackbarDispatch({
           type: "SET_PARAMS",
           payload: {
@@ -91,7 +100,7 @@ const SignupPage = () => {
           <TextField
             id="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             variant="outlined"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
@@ -100,6 +109,13 @@ const SignupPage = () => {
               startAdornment: (
                 <InputAdornment position="start">
                   <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 </InputAdornment>
               ),
             }}
@@ -120,15 +136,20 @@ const SignupPage = () => {
           </Stack>
         </Stack>
       </Container>
-      <div style={{
+      <div
+        style={{
           position: "absolute",
           width: "-webkit-fill-available",
-          bottom: "0"
-      }}>
+          bottom: "0",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+        }}
+      >
         <img
-        src={backgroundUrl}
-        alt="Background image"
-        style={{ width: "100%"}}
+          src={backgroundUrl}
+          alt="Background image"
+          style={{ width: "100%" }}
         />
       </div>
     </Box>

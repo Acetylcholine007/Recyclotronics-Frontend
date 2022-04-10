@@ -11,6 +11,7 @@ import {
   Stack,
   Snackbar,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import UserRoutes from "../routes/UserRoutes";
 import AdminRoutes from "../routes/AdminRoutes";
@@ -21,12 +22,14 @@ import { Menu } from "@mui/icons-material";
 import AppDrawer from "./components/AppDrawer";
 import { useHistory } from "react-router-dom";
 import { SnackbarContext } from "../shared/contexts/SnackbarContext";
+import { LoadingContext } from "../shared/contexts/LoadingContext";
 
 const drawerWidth = 240;
 
 const MainContainer = ({ window }) => {
   const auth = useContext(AuthContext);
-  const {snackbarParams, snackbarDispatch} = useContext(SnackbarContext);
+  const { loadingParams } = useContext(LoadingContext);
+  const { snackbarParams, snackbarDispatch } = useContext(SnackbarContext);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const history = useHistory();
@@ -153,6 +156,7 @@ const MainContainer = ({ window }) => {
         }}
       >
         <Toolbar />
+        {loadingParams.isOpen && <LinearProgress />}
         {auth.accountType === 1 && <UserRoutes />}
         {auth.accountType === 2 && <AdminRoutes />}
         <Snackbar
@@ -165,7 +169,9 @@ const MainContainer = ({ window }) => {
           onClose={() => snackbarDispatch({ type: "SET_SHOW", payload: false })}
         >
           <Alert
-            onClose={() => snackbarDispatch({ type: "SET_SHOW", payload: false })}
+            onClose={() =>
+              snackbarDispatch({ type: "SET_SHOW", payload: false })
+            }
             severity={snackbarParams.severity}
             variant="filled"
           >

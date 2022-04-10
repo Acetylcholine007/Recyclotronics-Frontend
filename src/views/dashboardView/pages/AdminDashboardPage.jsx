@@ -16,12 +16,14 @@ import BinStatusBar from "../../../shared/components/BinStatusBar";
 import LinearProgress from "@mui/material/LinearProgress";
 import { DateTime } from "luxon";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
+import { LoadingContext } from "../../../shared/contexts/LoadingContext";
 
 const AdminDashboardPage = () => {
   const [binGauge, setBinGauge] = useState(0);
   const [collectionHistory, setCollectionHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const { snackbarDispatch } = useContext(SnackbarContext);
+  const {loadingDispatch} = useContext(LoadingContext);
 
   useEffect(async () => {
     setLoading(true);
@@ -32,7 +34,7 @@ const AdminDashboardPage = () => {
   }, []);
 
   const sendNotificationHandler = async () => {
-    setLoading(true);
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: true } });
     const response = await RVMAPI.sendNotification();
     if (response.status === 200) {
       snackbarDispatch({
@@ -53,11 +55,11 @@ const AdminDashboardPage = () => {
         },
       });
     }
-    setLoading(false);
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
   };
 
   const collectHandler = async () => {
-    setLoading(true);
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: true } });
     const response = await RVMAPI.collect();
     if (response.status === 200) {
       setCollectionHistory([...collectionHistory, response.data]);
@@ -79,7 +81,7 @@ const AdminDashboardPage = () => {
         },
       });
     }
-    setLoading(false);
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
   };
 
   //loading style

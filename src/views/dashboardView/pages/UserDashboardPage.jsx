@@ -124,17 +124,17 @@ const UserDashboardPage = () => {
             </Stack>
           </Card>
         </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid item md={7} xs={12}>
           <Stack spacing={2} sx={{ marginBottom: "1rem" }}>
             <Card elevation={0} sx={{ padding: 2 }}>
               <Typography variant="h5">Exchange</Typography>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={tableHead}>Item</TableCell>
-                    <TableCell sx={tableHead}>Points</TableCell>
-                    <TableCell sx={tableHead}>Previous</TableCell>
-                    <TableCell sx={tableHead}>Updated</TableCell>
+                    <TableCell sx={tableHead} align='center'>Item</TableCell>
+                    <TableCell sx={tableHead} align='center'>Prevous PPG</TableCell>
+                    <TableCell sx={tableHead} align='center'>Current PPG</TableCell>
+                    <TableCell sx={tableHead} align='center'>Peso per Point</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -145,16 +145,16 @@ const UserDashboardPage = () => {
                   ) : (
                     scraps.map((scrap) => (
                       <StyledTableRow key={scrap.name}>
-                        <TableCell sx={{ fontWeight: "600" }}>
+                        <TableCell sx={{ fontWeight: "600" }} align='center'>
                           {scrap.name}
                         </TableCell>
-                        <TableCell sx={{ fontWeight: "600" }}>
+                        <TableCell sx={{ color: "#8c8fa7", fontWeight: "600" }} align='center'>
+                          {scrap.previousPPG}
+                        </TableCell>
+                        <TableCell sx={{ color: "#07b464", fontWeight: "600" }} align='center'>
                           {scrap.pointsPerGram}
                         </TableCell>
-                        <TableCell sx={{ color: "#8c8fa7", fontWeight: "600" }}>
-                          {scrap.pesoPerPoints}
-                        </TableCell>
-                        <TableCell sx={{ color: "#07b464", fontWeight: "600" }}>
+                        <TableCell sx={{ fontWeight: "600" }} align='center'>
                           {scrap.pesoPerPoints}
                         </TableCell>
                       </StyledTableRow>
@@ -179,7 +179,7 @@ const UserDashboardPage = () => {
             </Button>
           </Stack>
         </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid item md={5} xs={12}>
           <Stack spacing={2}>
             <Card
               sx={{
@@ -203,7 +203,7 @@ const UserDashboardPage = () => {
                   variant="h4"
                   sx={{ fontWeight: "bold", color: "#acacac" }}
                 >
-                  Total Points
+                  Total Balance
                 </Typography>
                 {loading ? (
                   <div style={totalPoints}>
@@ -211,7 +211,7 @@ const UserDashboardPage = () => {
                   </div>
                 ) : (
                   <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-                    {balance}
+                    {`₱ ${balance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`}
                   </Typography>
                 )}
               </Stack>
