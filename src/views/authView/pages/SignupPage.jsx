@@ -1,14 +1,11 @@
 import {
   Box,
   Button,
-  Card,
   Container,
   Stack,
   TextField,
   Typography,
   InputAdornment,
-  Snackbar,
-  Alert,
   IconButton,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
@@ -18,7 +15,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
-import backgroundUrl from "/images/BG.png";
+import backgroundUrl from "/images/background.svg";
 import { LoadingContext } from "../../../shared/contexts/LoadingContext";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 

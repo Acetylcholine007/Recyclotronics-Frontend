@@ -94,7 +94,7 @@ const MainContainer = ({ window }) => {
               <Avatar
                 sx={{ marginRight: "1rem" }}
                 alt="avatar"
-                src="https://media.istockphoto.com/photos/orange-slice-picture-id1163872349?k=20&m=1163872349&s=612x612&w=0&h=1oVhcd6gYzgvDCVJVqJN_6mPUnHCd9uYQk5rZ3Il_9s="
+                src="/images/avatar.svg"
               />
               <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                 {/* {auth.accountType === 1 ? "User" : "Admin"} */}

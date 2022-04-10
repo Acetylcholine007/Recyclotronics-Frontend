@@ -16,7 +16,7 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import { useLocation } from "react-router-dom";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
-import backgroundUrl from "/images/BG.png";
+import backgroundUrl from "/images/background.svg";
 import { LoadingContext } from "../../../shared/contexts/LoadingContext";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
