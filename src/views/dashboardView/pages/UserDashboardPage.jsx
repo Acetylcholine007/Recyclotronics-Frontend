@@ -21,8 +21,8 @@ import { AuthContext } from "../../../shared/contexts/AuthContext";
 import ExtraSmallBinStatus from "../../../shared/components/ExtraSmallBinStatus";
 import LinearProgress from "@mui/material/LinearProgress";
 import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
-import vendingMachineURI from "/images/vending-machine.png"
-import pointURI from "/images/point.png"
+import vendingMachineURI from "/images/vending-machine.png";
+import pointURI from "/images/point.png";
 
 const UserDashboardPage = () => {
   const [scraps, setScraps] = useState([]);
@@ -34,21 +34,32 @@ const UserDashboardPage = () => {
   const history = useHistory();
 
   const scanHandler = async () => {
-    setLoading(true);
-    const response = await RVMAPI.initiateScan();
-    setLoading(false);
-    if (response.status === 200) {
-      history.push("/dashboard/scan");
-    } else {
-      console.log('>>>>>>>',response)
+    if (rvm.binGauge === 100) {
       snackbarDispatch({
         type: "SET_PARAMS",
         payload: {
-          message: response.data.message || response.message,
+          message: "App can't accept E-wate processing for the moment because RVM bin is full",
           isOpen: true,
           severity: "error",
         },
       });
+    } else {
+      setLoading(true);
+      const response = await RVMAPI.initiateScan();
+      setLoading(false);
+      if (response.status === 200) {
+        history.push("/dashboard/scan");
+      } else {
+        console.log(">>>>>>>", response);
+        snackbarDispatch({
+          type: "SET_PARAMS",
+          payload: {
+            message: response.data.message || response.message,
+            isOpen: true,
+            severity: "error",
+          },
+        });
+      }
     }
   };
 
@@ -131,10 +142,18 @@ const UserDashboardPage = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={tableHead} align='center'>Item</TableCell>
-                    <TableCell sx={tableHead} align='center'>Prevous PPG</TableCell>
-                    <TableCell sx={tableHead} align='center'>Current PPG</TableCell>
-                    <TableCell sx={tableHead} align='center'>Peso per Point</TableCell>
+                    <TableCell sx={tableHead} align="center">
+                      Item
+                    </TableCell>
+                    <TableCell sx={tableHead} align="center">
+                      Prevous PPG
+                    </TableCell>
+                    <TableCell sx={tableHead} align="center">
+                      Current PPG
+                    </TableCell>
+                    <TableCell sx={tableHead} align="center">
+                      Peso per Point
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -145,16 +164,22 @@ const UserDashboardPage = () => {
                   ) : (
                     scraps.map((scrap) => (
                       <StyledTableRow key={scrap.name}>
-                        <TableCell sx={{ fontWeight: "600" }} align='center'>
+                        <TableCell sx={{ fontWeight: "600" }} align="center">
                           {scrap.name}
                         </TableCell>
-                        <TableCell sx={{ color: "#8c8fa7", fontWeight: "600" }} align='center'>
+                        <TableCell
+                          sx={{ color: "#8c8fa7", fontWeight: "600" }}
+                          align="center"
+                        >
                           {scrap.previousPPG}
                         </TableCell>
-                        <TableCell sx={{ color: "#07b464", fontWeight: "600" }} align='center'>
+                        <TableCell
+                          sx={{ color: "#07b464", fontWeight: "600" }}
+                          align="center"
+                        >
                           {scrap.pointsPerGram}
                         </TableCell>
-                        <TableCell sx={{ fontWeight: "600" }} align='center'>
+                        <TableCell sx={{ fontWeight: "600" }} align="center">
                           {scrap.pesoPerPoints}
                         </TableCell>
                       </StyledTableRow>
@@ -193,11 +218,7 @@ const UserDashboardPage = () => {
               }}
               elevation={0}
             >
-              <img
-                src={pointURI}
-                alt="points"
-                style={{ height: "5rem" }}
-              />
+              <img src={pointURI} alt="points" style={{ height: "5rem" }} />
               <Stack>
                 <Typography
                   variant="h4"
@@ -211,7 +232,9 @@ const UserDashboardPage = () => {
                   </div>
                 ) : (
                   <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-                    {`₱ ${balance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`}
+                    {`₱ ${balance
+                      .toFixed(2)
+                      .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`}
                   </Typography>
                 )}
               </Stack>
