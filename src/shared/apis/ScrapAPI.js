@@ -13,7 +13,7 @@ const updateScrap = async (scrap) => {
     `/scraps/${scrap._id}`,
     {
       name: scrap.name,
-      pointsPerGram: scrap.pointsPerGram,
+      pointsPerKilo: scrap.pointsPerKilo,
       pesoPerPoints: scrap.pesoPerPoints,
     },
     "PUT",

@@ -73,7 +73,7 @@ const SettingsPage = () => {
       setScraps(() => {
         const newScraps = [...scraps];
         const target = newScraps.find((item) => item._id === response.data._id);
-        target.pointsPerGram = response.data.pointsPerGram;
+        target.pointsPerKilo = response.data.pointsPerKilo;
         target.pesoPerPoints = response.data.pesoPerPoints;
         target.name = response.data.name;
         return newScraps;
@@ -112,7 +112,7 @@ const SettingsPage = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>Item</StyledTableCell>
-              <StyledTableCell align="center">Points per gram</StyledTableCell>
+              <StyledTableCell align="center">Points per Kilo</StyledTableCell>
               <StyledTableCell align="center">Peso per points</StyledTableCell>
               <StyledTableCell align="center"></StyledTableCell>
             </TableRow>
@@ -129,7 +129,7 @@ const SettingsPage = () => {
                     {scrap.name}
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={sx}>
-                    {scrap.pointsPerGram}
+                    {scrap.pointsPerKilo}
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={sx}>
                     {scrap.pesoPerPoints}

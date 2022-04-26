@@ -11,6 +11,7 @@ import {
   TableRow,
   Typography,
   styled,
+  Box,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import ScrapAPI from "../../../shared/apis/ScrapAPI";
@@ -38,7 +39,8 @@ const UserDashboardPage = () => {
       snackbarDispatch({
         type: "SET_PARAMS",
         payload: {
-          message: "App can't accept E-wate processing for the moment because RVM bin is full",
+          message:
+            "App can't accept E-wate processing for the moment because RVM bin is full",
           isOpen: true,
           severity: "error",
         },
@@ -109,30 +111,30 @@ const UserDashboardPage = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Card sx={{ padding: "2rem" }} elevation={0}>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-evenly"
-            >
-              <Typography
-                variant="h3"
-                sx={{
-                  fontWeight: "bold",
-                  fontStyle: "italic",
-                  color: "#232859",
-                }}
-                align="center"
-              >
-                RVM, Re-start and Trade
-                <br />
-                your E-waste
-              </Typography>
-              <img
-                src={vendingMachineURI}
-                alt="vending machine"
-                style={{ width: "10rem" }}
-              />
-            </Stack>
+            <Grid container spacing={1} align='center'>
+              <Grid item xs={12} md={8}>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    fontWeight: "bold",
+                    fontStyle: "italic",
+                    color: "#232859",
+                  }}
+                  align="center"
+                >
+                  RVM, Re-start and Trade
+                  <br />
+                  your E-waste
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <img
+                  src={vendingMachineURI}
+                  alt="vending machine"
+                  style={{ width: "10rem" }}
+                />
+              </Grid>
+            </Grid>
           </Card>
         </Grid>
         <Grid item md={7} xs={12}>
@@ -146,10 +148,10 @@ const UserDashboardPage = () => {
                       Item
                     </TableCell>
                     <TableCell sx={tableHead} align="center">
-                      Prevous PPG
+                      Prevous Points per Kilo
                     </TableCell>
                     <TableCell sx={tableHead} align="center">
-                      Current PPG
+                      Current Points per Kilo
                     </TableCell>
                     <TableCell sx={tableHead} align="center">
                       Peso per Point
@@ -171,13 +173,13 @@ const UserDashboardPage = () => {
                           sx={{ color: "#8c8fa7", fontWeight: "600" }}
                           align="center"
                         >
-                          {scrap.previousPPG}
+                          {scrap.previousPPK}
                         </TableCell>
                         <TableCell
                           sx={{ color: "#07b464", fontWeight: "600" }}
                           align="center"
                         >
-                          {scrap.pointsPerGram}
+                          {scrap.pointsPerKilo}
                         </TableCell>
                         <TableCell sx={{ fontWeight: "600" }} align="center">
                           {scrap.pesoPerPoints}
@@ -218,8 +220,12 @@ const UserDashboardPage = () => {
               }}
               elevation={0}
             >
-              <img src={pointURI} alt="points" style={{ height: "5rem" }} />
-              <Stack>
+              <img
+                src={pointURI}
+                alt="points"
+                style={{ height: "5rem", paddingRight: "1rem" }}
+              />
+              <Stack align="center">
                 <Typography
                   variant="h4"
                   sx={{ fontWeight: "bold", color: "#acacac" }}
@@ -231,7 +237,7 @@ const UserDashboardPage = () => {
                     <LinearProgress />
                   </div>
                 ) : (
-                  <Typography variant="h2" sx={{ fontWeight: "bold" }}>
+                  <Typography variant="h3" sx={{ fontWeight: "bold" }}>
                     {`₱ ${balance
                       .toFixed(2)
                       .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`}
@@ -252,7 +258,7 @@ const UserDashboardPage = () => {
               elevation={0}
             >
               <ExtraSmallBinStatus />
-              <Stack>
+              <Stack sx={{ paddingLeft: "1rem" }} align="center">
                 <Typography
                   variant="h4"
                   sx={{ fontWeight: "bold", color: "#acacac" }}
@@ -264,7 +270,7 @@ const UserDashboardPage = () => {
                     <LinearProgress />
                   </div>
                 ) : (
-                  <Typography variant="h2" sx={{ fontWeight: "bold" }}>
+                  <Typography variant="h3" sx={{ fontWeight: "bold" }}>
                     {`${rvm.binGauge}%`}
                   </Typography>
                 )}

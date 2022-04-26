@@ -81,7 +81,7 @@ const ProfilePage = () => {
       >
         <Typography variant="h6">Transaction History</Typography>
         <ToggleButtonGroup
-          sx={{ marginLeft: "25%", border: "1px solid #146356" }}
+        sx={{marginLeft: {md: "25%", sm: 0}, border: "1px solid #146356"}}
           color="primary"
           value={target}
           exclusive
@@ -147,7 +147,7 @@ const ProfilePage = () => {
                       </TableCell>
                       <TableCell>{report.data.scrapType}</TableCell>
                       <TableCell>
-                        {report.data.weight * report.data.pointsPerGram}
+                        {report.data.weight * report.data.pointsPerKilo}
                       </TableCell>
                     </TableRow>
                   );

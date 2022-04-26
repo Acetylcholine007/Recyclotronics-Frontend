@@ -91,7 +91,7 @@ const WalletPage = () => {
           )}
         </Stack>
       </Toolbar>
-      <Card sx={{ padding: "2rem", margin: "4rem" }}>
+      <Card sx={{ padding: "2rem", margin: {xs:"auto", md: "4rem"} }}>
         <Stack spacing={2}>
           <TextField
             id="cashout"

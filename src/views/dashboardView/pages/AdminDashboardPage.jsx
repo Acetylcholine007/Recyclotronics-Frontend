@@ -95,7 +95,7 @@ const AdminDashboardPage = () => {
   return (
     <Container>
       <Grid container>
-        <Grid item md={6} xs={12} sx={{ marginTop: "1rem" }}>
+        <Grid item md={6} xs={12} sx={{ marginTop: "1rem", display: 'flex', flexDirection: 'column' }}>
           <Typography variant="h3" sx={{ fontWeight: "bold" }}>
             Bin Status
           </Typography>

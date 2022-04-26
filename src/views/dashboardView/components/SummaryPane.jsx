@@ -13,14 +13,18 @@ import React from "react";
 
 const SummaryPane = ({ result, scanHandler, exitHandler }) => {
   return (
-    <Stack alignItems="stretch" spacing={2} sx={{width: '50%'}}>
+    <Stack alignItems="stretch" spacing={2} sx={{ width: "50%" }}>
       <Card
         sx={{
           padding: "2rem",
         }}
       >
         <Typography variant="h3">
-          {result.scanResult ? "SCAN SUCCESSFUL" : "ITEM UNIDENTIFIED"}
+          {result.scanResult
+            ? "SCAN SUCCESSFUL"
+            : result.payload.scrapType === "Multiple"
+            ? "MULTIPLE ITEMS DETECTED"
+            : "ITEM UNIDENTIFIED"}
         </Typography>
       </Card>
       <Card
@@ -34,7 +38,7 @@ const SummaryPane = ({ result, scanHandler, exitHandler }) => {
               <TableRow>
                 <TableCell align="center">E-Waste</TableCell>
                 <TableCell align="center">Weight</TableCell>
-                <TableCell align="center">Points per Gram</TableCell>
+                <TableCell align="center">Points per Kilo</TableCell>
                 <TableCell align="center">Peso per Points</TableCell>
               </TableRow>
             </TableHead>
@@ -43,7 +47,7 @@ const SummaryPane = ({ result, scanHandler, exitHandler }) => {
                 <TableCell align="center">{result.payload.scrapType}</TableCell>
                 <TableCell align="center">{result.payload.weight}</TableCell>
                 <TableCell align="center">
-                  {result.payload.pointsPerGram}
+                  {result.payload.pointsPerKilo}
                 </TableCell>
                 <TableCell align="center">
                   {result.payload.pesoPerPoints}
@@ -51,6 +55,11 @@ const SummaryPane = ({ result, scanHandler, exitHandler }) => {
               </TableRow>
             </TableBody>
           </Table>
+        )}
+        {!result.scanResult && result.payload.scrapType === "Multiple" && (
+          <Typography variant="h5">
+            Only load one item to RVM per scan
+          </Typography>
         )}
       </Card>
       <Button

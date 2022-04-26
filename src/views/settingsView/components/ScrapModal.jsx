@@ -36,14 +36,14 @@ const ScrapModal = ({ scrap, open, handleClose, handleSubmit }) => {
       <Box sx={style}>
         <Stack spacing={2}>
           <TextField
-            id="pointsPerGram"
-            label="Points per Gram"
+            id="pointsPerKilo"
+            label="Points per Kilo"
             type="number"
             variant="outlined"
             onChange={(e) =>
-              setNewScrap({ ...newScrap, pointsPerGram: e.target.value })
+              setNewScrap({ ...newScrap, pointsPerKilo: e.target.value })
             }
-            value={newScrap.pointsPerGram}
+            value={newScrap.pointsPerKilo}
             fullWidth={true}
           />
           <TextField
