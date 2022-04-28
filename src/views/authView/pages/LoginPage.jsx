@@ -177,6 +177,7 @@ const LoginPage = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-end",
+          zIndex: "-10",
         }}
       >
         <img
