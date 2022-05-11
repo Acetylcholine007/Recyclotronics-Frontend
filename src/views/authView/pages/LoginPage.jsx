@@ -100,7 +100,7 @@ const LoginPage = () => {
 
   return (
     <Box>
-      <Container align="center" sx={{ marginTop: "4rem" }}>
+      <Container align="center" sx={{ marginTop: "3rem" }}>
         <Typography variant="h3" sx={{ marginBottom: "1rem" }}>
           Sign in
         </Typography>
@@ -159,7 +159,7 @@ const LoginPage = () => {
           )}
           <Stack direction="row" justifyContent="center">
             <Typography variant="h6" color="#7d7d7f">
-              Don't have and account?
+              Don't have an account?
             </Typography>
             <Button variant="text" onClick={() => history.push("/signup")}>
               <Typography color="#07b464" fontWeight="bold">

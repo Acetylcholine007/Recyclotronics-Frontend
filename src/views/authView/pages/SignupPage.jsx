@@ -55,7 +55,7 @@ const SignupPage = () => {
 
   return (
     <Box>
-      <Container align="center" sx={{ marginTop: "4rem" }}>
+      <Container align="center" sx={{ marginTop: "3rem" }}>
         <Typography variant="h3" sx={{ marginBottom: "1.5rem" }}>
           Sign up for an account
         </Typography>

@@ -74,6 +74,12 @@ const ProfilePage = () => {
     }
   };
 
+  function round(value, decimals) {
+    return Number(Math.round(value + "e" + decimals) + "e-" + decimals).toFixed(
+      decimals
+    );
+  }
+
   return (
     <Container align="center" sx={{ marginTop: "1rem" }}>
       <div
@@ -81,7 +87,7 @@ const ProfilePage = () => {
       >
         <Typography variant="h6">Transaction History</Typography>
         <ToggleButtonGroup
-        sx={{marginLeft: {md: "25%", sm: 0}, border: "1px solid #146356"}}
+          sx={{ marginLeft: { md: "25%", sm: 0 }, border: "1px solid #146356" }}
           color="primary"
           value={target}
           exclusive
@@ -147,7 +153,10 @@ const ProfilePage = () => {
                       </TableCell>
                       <TableCell>{report.data.scrapType}</TableCell>
                       <TableCell>
-                        {report.data.weight * report.data.pointsPerKilo}
+                        {round(
+                          report.data.weight * report.data.pointsPerKilo,
+                          2
+                        )}
                       </TableCell>
                     </TableRow>
                   );
@@ -158,7 +167,9 @@ const ProfilePage = () => {
                       <TableCell>
                         {datetime.toLocaleString(DateTime.DATETIME_MED)}
                       </TableCell>
-                      <TableCell>{`₱ ${(+report.data.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`}</TableCell>
+                      <TableCell>{`₱ ${(+report.data.amount)
+                        .toFixed(2)
+                        .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`}</TableCell>
                     </TableRow>
                   );
                 }
