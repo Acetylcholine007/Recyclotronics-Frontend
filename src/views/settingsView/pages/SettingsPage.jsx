@@ -10,7 +10,7 @@ import {
   tableCellClasses,
   Card,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ScrapAPI from "../../../shared/apis/ScrapAPI";
 import ScrapModal from "../components/ScrapModal";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -52,7 +52,7 @@ const sx = {
 
 const SettingsPage = () => {
   const [scraps, setScraps] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [targetScrap, setTargetScrap] = useState(null);
   const [loading, setLoading] = useState(true);
   const { snackbarDispatch } = useContext(SnackbarContext);
@@ -152,7 +152,7 @@ const SettingsPage = () => {
       <ScrapModal
         open={open}
         handleClose={handleClose}
-        handleSubmit={handleSubmit}
+        handleSubmit={() => handleSubmit(email)}
         scrap={targetScrap}
       />
     </Container>

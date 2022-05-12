@@ -53,10 +53,28 @@ const resendConfirmation = async (email, callback, errorCallback) => {
   return response;
 };
 
+const sendResetPassword = async (email, callback, errorCallback) => {
+  let response = await requestAxios(
+    "/auth/user/sendResetPassword",
+    { email },
+    "POST",
+    "application/json"
+  );
+  if (response.status === 200) {
+    callback();
+  } else {
+    errorCallback(
+      response.data.message || "Failed to send password reset link"
+    );
+  }
+  return response;
+};
+
 const AuthAPI = {
   signup,
   login,
   resendConfirmation,
+  sendResetPassword,
 };
 
 export default AuthAPI;

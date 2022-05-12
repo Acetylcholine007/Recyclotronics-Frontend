@@ -19,6 +19,7 @@ import { SnackbarContext } from "../../../shared/contexts/SnackbarContext";
 import backgroundUrl from "/images/background.svg";
 import { LoadingContext } from "../../../shared/contexts/LoadingContext";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import PasswordResetModal from "../components/PasswordResetModal";
 
 const LoginPage = () => {
   const auth = useContext(AuthContext);
@@ -26,6 +27,7 @@ const LoginPage = () => {
   const { loadingDispatch } = useContext(LoadingContext);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [open, setOpen] = useState(false);
   const [showResendVerification, setShowResendVerification] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
@@ -84,6 +86,47 @@ const LoginPage = () => {
     );
     loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
   };
+
+  const handleOpen = (scrap) => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const passwordResetHandler = async (email) => {
+    handleClose();
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: true } });
+    const response = await AuthAPI.sendResetPassword(
+      email,
+      () => {
+        snackbarDispatch({
+          type: "SET_PARAMS",
+          payload: {
+            message: 'Password reset link has been sent into your email.',
+            isOpen: true,
+            severity: "success",
+          },
+        });
+      },
+      (message) => {
+        snackbarDispatch({
+          type: "SET_PARAMS",
+          payload: {
+            message: message,
+            isOpen: true,
+            severity: "error",
+          },
+        });
+      }
+    );
+    if (response.status === 403) {
+      console.log("reached");
+      setShowResendVerification(true);
+    }
+    loadingDispatch({ type: "SET_PARAMS", payload: { isOpen: false } });
+  }
 
   useEffect(() => {
     if (location.state?.toVerify) {
@@ -157,6 +200,11 @@ const LoginPage = () => {
               Resend Email Verification
             </Button>
           )}
+          <Button variant="text" onClick={handleOpen}>
+            <Typography color="#07b464" fontWeight="bold">
+              Forgot Password?
+            </Typography>
+          </Button>
           <Stack direction="row" justifyContent="center">
             <Typography variant="h6" color="#7d7d7f">
               Don't have an account?
@@ -168,6 +216,10 @@ const LoginPage = () => {
             </Button>
           </Stack>
         </Stack>
+        <PasswordResetModal 
+        open={open}
+        handleClose={handleClose}
+        handleSubmit={passwordResetHandler}/>
       </Container>
       <div
         style={{
