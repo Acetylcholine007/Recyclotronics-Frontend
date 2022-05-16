@@ -49,7 +49,7 @@ export const userRoutes = [
     path: "/dashboard",
   },
   {
-    title: "Profile",
+    title: "Transactions",
     icon: <PersonRounded />,
     path: "/profile",
   },

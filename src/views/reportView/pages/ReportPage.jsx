@@ -25,6 +25,7 @@ const ReportPage = () => {
   const [target, setTarget] = useState("DEPOSIT");
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(12);
   const [loading, setLoading] = useState(true);
 
@@ -36,6 +37,7 @@ const ReportPage = () => {
     );
     setReports(response.data);
     setTotalItems(response.totalItems);
+    setTotalPoints(response.totalPoints);
     setLoading(false);
   }, [target, page]);
 
@@ -182,56 +184,50 @@ const ReportPage = () => {
               </TableRow>
             )} */}
           </TableBody>
-        </Table>
-        <TableFooter>
-          <div
-            style={{ margin: "1rem 0", display: "flex", alignItems: "center" }}
-          >
-            <h5 style={{ margin: "0 5px" }}>Page: {page}</h5>
-            {page === 1 ? (
-              <Button
-                style={btnStyle}
-                variant="outlined"
-                endIcon={<NavigateNextIcon />}
-                onClick={() => setPage(page + 1)}
-              >
-                <h5>Next</h5>
-              </Button>
-            ) : (
-              <div>
-                {page <= rowsPerPage ? (
-                  <Button
-                    style={btnStyle}
-                    variant="outlined"
-                    startIcon={<NavigateBeforeIcon />}
-                    onClick={() => setPage(page - 1)}
-                  >
-                    <h5>Back</h5>
-                  </Button>
-                ) : (
-                  <div>
-                    <Button
-                      style={btnStyle}
-                      variant="outlined"
-                      startIcon={<NavigateBeforeIcon />}
-                      onClick={() => setPage(page - 1)}
-                    >
-                      <h5>Back</h5>
-                    </Button>
-                    <Button
-                      style={btnStyle}
-                      variant="outlined"
-                      endIcon={<NavigateNextIcon />}
-                      onClick={() => setPage(page + 1)}
-                    >
-                      <h5>Next</h5>
-                    </Button>
+          <TableFooter>
+            <tr>
+              <td colSpan="4">
+                <div
+                  style={{
+                    margin: "1rem 0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <div>{`Transaction Count: ${totalItems}`}</div>
+                  <div>{`Total Points Deposited: ${round(
+                    totalPoints,
+                    2
+                  )}`}</div>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <h5 style={{ margin: "0 5px" }}>Page: {page}</h5>
+                    {page !== 1 && page <= Math.ceil(totalItems / 12) && (
+                      <Button
+                        style={btnStyle}
+                        variant="outlined"
+                        startIcon={<NavigateBeforeIcon />}
+                        onClick={() => setPage(page - 1)}
+                      >
+                        <h5>Back</h5>
+                      </Button>
+                    )}
+                    {page >= 1 && page < Math.ceil(totalItems / 12) && (
+                      <Button
+                        style={btnStyle}
+                        variant="outlined"
+                        endIcon={<NavigateNextIcon />}
+                        onClick={() => setPage(page + 1)}
+                      >
+                        <h5>Next</h5>
+                      </Button>
+                    )}
                   </div>
-                )}
-              </div>
-            )}
-          </div>
-        </TableFooter>
+                </div>
+              </td>
+            </tr>
+          </TableFooter>
+        </Table>
       </TableContainer>
     </Container>
   );

@@ -47,7 +47,7 @@ const MainContainer = ({ window }) => {
       case "/dashboard":
         return "Dashboard";
       case "/profile":
-        return "Profile";
+        return "Reports";
       case "/wallet":
         return "Wallet";
       case "/reports":
