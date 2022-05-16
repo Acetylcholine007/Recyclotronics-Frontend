@@ -26,6 +26,7 @@ const ReportPage = () => {
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
+  const [totalRedeems, setTotalRedeems] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(12);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +39,7 @@ const ReportPage = () => {
     setReports(response.data);
     setTotalItems(response.totalItems);
     setTotalPoints(response.totalPoints);
+    setTotalRedeems(response.totalRedeems);
     setLoading(false);
   }, [target, page]);
 
@@ -196,8 +198,12 @@ const ReportPage = () => {
                   }}
                 >
                   <div>{`Transaction Count: ${totalItems}`}</div>
-                  <div>{`Total Points Deposited: ${round(
-                    totalPoints,
+                  <div>{`Total ${
+                    target === "DEPOSIT"
+                      ? "Points Deposited"
+                      : "Ammount Redeemed"
+                  }: ${round(
+                    target === "DEPOSIT" ? totalPoints : totalRedeems,
                     2
                   )}`}</div>
                   <div style={{ display: "flex", alignItems: "center" }}>
