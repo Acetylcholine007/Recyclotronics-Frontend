@@ -22,6 +22,19 @@ const initiateScan = async () => {
   return response;
 };
 
+const cancelScan = async () => {
+  let response = await requestAxios(
+    `/rvm/cancelScan/${RVM_SERIAL}`,
+    {},
+    "PATCH",
+    "application/json"
+  );
+  if (response) {
+    console.log(response);
+  }
+  return response;
+};
+
 const collect = async () => {
   let response = await requestAxios(
     `/rvm/collect/${RVM_SERIAL}`,
@@ -51,6 +64,7 @@ const sendNotification = async () => {
 const RVMAPI = {
   getRVMData,
   initiateScan,
+  cancelScan,
   sendNotification,
   collect,
 };
