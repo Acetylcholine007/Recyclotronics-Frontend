@@ -152,7 +152,7 @@ const SettingsPage = () => {
       <ScrapModal
         open={open}
         handleClose={handleClose}
-        handleSubmit={() => handleSubmit(email)}
+        handleSubmit={handleSubmit}
         scrap={targetScrap}
       />
     </Container>
